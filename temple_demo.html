@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Temple de la Création - Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <!-- Inclure tous les CSS -->
+    <link rel="stylesheet" href="interface_temple_layout.css">
+    <link rel="stylesheet" href="interface_temple_responsive.css">
+    <link rel="stylesheet" href="avatar_prometheus.css">
+    <link rel="stylesheet" href="avatar_performance_optimized.css">
+    
+    <style>
+        /* Demo specific styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #1A1A2E;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .demo-instructions {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .demo-instructions h3 {
+            margin: 0 0 12px 0;
+            color: #FFD700;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .demo-instructions ul {
+            margin: 0;
+            padding: 0 0 0 16px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .demo-instructions li {
+            margin-bottom: 4px;
+        }
+        
+        .demo-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #FFD700;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .demo-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #FFD700;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Instructions Demo -->
+    <div class="demo-instructions">
+        <button class="demo-close" onclick="this.parentElement.style.display='none'">×</button>
+        <h3>🎯 Interface Temple Demo</h3>
+        <ul>
+            <li><strong>Navigation</strong> : Alt+1-4 ou boutons flottants</li>
+            <li><strong>Avatar</strong> : Click pour changer d'état</li>
+            <li><strong>Chat</strong> : Tapez un message</li>
+            <li><strong>Mondes</strong> : Click sur les orbes</li>
+            <li><strong>Responsive</strong> : Redimensionnez la fenêtre</li>
+            <li><strong>Transitions</strong> : Hover sur les zones</li>
+        </ul>
+    </div>
+    
+    <!-- Status Demo -->
+    <div class="demo-status">
+        <span id="status">Ready</span>
+    </div>
+
+    <!-- Interface Temple Complète -->
+    <div class="temple-creation">
+        <!-- Breadcrumbs -->
+        <div class="temple-breadcrumbs">
+            <span class="breadcrumb-item active" data-zone="conversation">Conversation</span>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item" data-zone="mondes">Mondes</span>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item" data-zone="connaissance">Connaissance</span>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item" data-zone="inspiration">Inspiration</span>
+        </div>
+
+        <!-- Zone 1: Conversation -->
+        <div class="zone-conversation">
+            <div class="zone-header">
+                <div class="zone-icon">💬</div>
+                <h2 class="zone-title">Conversation</h2>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-messages">
+                    <div class="message message-prometheus">
+                        <div class="message-avatar">
+                            <div class="avatar-prometheus avatar-écoute" style="width: 24px; height: 24px;">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>Bonjour ! Je suis Prometheus, votre partenaire de co-création. Comment puis-je vous aider aujourd'hui ?</div>
+                    </div>
+                    
+                    <div class="message message-user">
+                        <div>Salut Prometheus ! Je veux créer une nouvelle application mobile.</div>
+                    </div>
+                    
+                    <div class="message message-prometheus">
+                        <div class="message-avatar">
+                            <div class="avatar-prometheus avatar-réflexion" style="width: 24px; height: 24px;">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>Excellent ! Quel type d'application mobile souhaitez-vous créer ? Fitness, social, productivité, ou autre chose ?</div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" placeholder="Tapez votre message..." />
+                    <button class="chat-send">Envoyer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone 2: Mondes -->
+        <div class="zone-mondes">
+            <div class="zone-header">
+                <div class="zone-icon">🌍</div>
+                <h2 class="zone-title">Vos Mondes</h2>
+            </div>
+            
+            <div class="mondes-gallery">
+                <div class="monde-orb">
+                    <div class="monde-icon">🚀</div>
+                    <div class="monde-name">App Mobile</div>
+                    <div class="monde-stats">85% Done</div>
+                </div>
+                
+                <div class="monde-orb">
+                    <div class="monde-icon">🎨</div>
+                    <div class="monde-name">Art Platform</div>
+                    <div class="monde-stats">45% Done</div>
+                </div>
+                
+                <div class="monde-orb">
+                    <div class="monde-icon">📊</div>
+                    <div class="monde-name">Data Science</div>
+                    <div class="monde-stats">12% Done</div>
+                </div>
+                
+                <div class="monde-orb monde-nouveau">
+                    <div class="monde-icon">➕</div>
+                    <div class="monde-name">Nouveau</div>
+                    <div class="monde-stats">Créer</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone 3: Connaissance -->
+        <div class="zone-connaissance">
+            <div class="zone-header">
+                <div class="zone-icon">🧠</div>
+                <h2 class="zone-title">Connaissance</h2>
+            </div>
+            
+            <div class="connaissance-grid">
+                <div class="connaissance-card">
+                    <div class="connaissance-title">React Native</div>
+                    <div class="connaissance-value">+23%</div>
+                    <div class="connaissance-progress">
+                        <div class="connaissance-progress-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+                
+                <div class="connaissance-card">
+                    <div class="connaissance-title">Firebase</div>
+                    <div class="connaissance-value">+18%</div>
+                    <div class="connaissance-progress">
+                        <div class="connaissance-progress-bar" style="width: 60%"></div>
+                    </div>
+                </div>
+                
+                <div class="connaissance-card">
+                    <div class="connaissance-title">UX Design</div>
+                    <div class="connaissance-value">+15%</div>
+                    <div class="connaissance-progress">
+                        <div class="connaissance-progress-bar" style="width: 45%"></div>
+                    </div>
+                </div>
+                
+                <div class="connaissance-card">
+                    <div class="connaissance-title">Performance</div>
+                    <div class="connaissance-value">+12%</div>
+                    <div class="connaissance-progress">
+                        <div class="connaissance-progress-bar" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone 4: Inspiration -->
+        <div class="zone-inspiration">
+            <div class="zone-header">
+                <div class="zone-icon">💡</div>
+                <h2 class="zone-title">Inspiration</h2>
+            </div>
+            
+            <div class="inspiration-grid">
+                <div class="inspiration-card">
+                    <div class="inspiration-icon">🎨</div>
+                    <div>UI Trends 2024</div>
+                </div>
+                
+                <div class="inspiration-card">
+                    <div class="inspiration-icon">📱</div>
+                    <div>Apps Similaires</div>
+                </div>
+                
+                <div class="inspiration-card">
+                    <div class="inspiration-icon">🔥</div>
+                    <div>Nouvelles Libs</div>
+                </div>
+                
+                <div class="inspiration-card">
+                    <div class="inspiration-icon">💡</div>
+                    <div>Idées en cours</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="avatar_suivi_curseur.js"></script>
+    <script src="interface_temple_navigation.js"></script>
+    <script src="interface_temple_transitions.js"></script>
+    
+    <script>
+        // Demo interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            const status = document.getElementById('status');
+            const chatInput = document.querySelector('.chat-input');
+            const chatSend = document.querySelector('.chat-send');
+            const chatMessages = document.querySelector('.chat-messages');
+            
+            // Update status
+            function updateStatus(message) {
+                status.textContent = message;
+                setTimeout(() => {
+                    status.textContent = 'Ready';
+                }, 2000);
+            }
+            
+            // Chat functionality
+            chatSend.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+            
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                updateStatus('Message sent');
+                
+                // Add user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message message-user';
+                userMessage.textContent = message;
+                chatMessages.appendChild(userMessage);
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate Prometheus response
+                setTimeout(() => {
+                    const prometheusMessage = document.createElement('div');
+                    prometheusMessage.className = 'message message-prometheus';
+                    prometheusMessage.innerHTML = `
+                        <div class="message-avatar">
+                            <div class="avatar-prometheus avatar-co-création" style="width: 24px; height: 24px;">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>Je comprends ! Analysons votre demande et créons quelque chose d'extraordinaire ensemble. ${getRandomResponse()}</div>
+                    `;
+                    chatMessages.appendChild(prometheusMessage);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    updateStatus('Response received');
+                }, 1000);
+            }
+            
+            function getRandomResponse() {
+                const responses = [
+                    "C'est une excellente idée !",
+                    "Je vois déjà comment nous pouvons l'optimiser.",
+                    "Laissez-moi vous proposer quelques approches créatives.",
+                    "Cela me rappelle des patterns intéressants que j'ai appris.",
+                    "Je suis excité de co-créer cela avec vous !"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+            
+            // World orb interactions
+            const worldOrbs = document.querySelectorAll('.monde-orb');
+            worldOrbs.forEach(orb => {
+                orb.addEventListener('click', () => {
+                    const worldName = orb.querySelector('.monde-name').textContent;
+                    updateStatus(`Clicked ${worldName}`);
+                });
+            });
+            
+            // Inspiration cards
+            const inspirationCards = document.querySelectorAll('.inspiration-card');
+            inspirationCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const idea = card.textContent.trim();
+                    updateStatus(`Inspired by ${idea}`);
+                });
+            });
+            
+            // Avatar states demo
+            const avatar = document.querySelector('.avatar-prometheus');
+            if (avatar) {
+                avatar.addEventListener('click', () => {
+                    const states = ['écoute', 'réflexion', 'illumination', 'co-création'];
+                    const currentClass = Array.from(avatar.classList).find(cls => cls.startsWith('avatar-'));
+                    const currentState = currentClass ? currentClass.replace('avatar-', '') : 'écoute';
+                    const currentIndex = states.indexOf(currentState);
+                    const nextState = states[(currentIndex + 1) % states.length];
+                    
+                    avatar.classList.remove(`avatar-${currentState}`);
+                    avatar.classList.add(`avatar-${nextState}`);
+                    updateStatus(`Avatar state: ${nextState}`);
+                });
+            }
+            
+            // Responsive demo
+            window.addEventListener('resize', () => {
+                const width = window.innerWidth;
+                let deviceType = 'Desktop';
+                if (width < 768) deviceType = 'Mobile';
+                else if (width < 1024) deviceType = 'Tablet';
+                else if (width >= 1920) deviceType = 'Ultra-wide';
+                
+                updateStatus(`${deviceType} view (${width}px)`);
+            });
+            
+            // Initial status
+            updateStatus('Demo loaded successfully');
+        });
+    </script>
+</body>
+</html>

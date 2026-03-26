@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prometheus - Temple Modern</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="temple_modern.css">
+    <link rel="stylesheet" href="avatar_prometheus.css">
+    <link rel="stylesheet" href="avatar_performance_optimized.css">
+</head>
+<body>
+    <!-- Infinite Space Background -->
+    <div class="universe-background"></div>
+    <div class="stars" id="stars"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation Minimaliste -->
+    <div class="modern-nav">
+        <div class="nav-dot active" data-zone="conversation" title="Conversation"></div>
+        <div class="nav-dot" data-zone="mondes" title="Mondes"></div>
+        <div class="nav-dot" data-zone="connaissance" title="Connaissance"></div>
+        <div class="nav-dot" data-zone="inspiration" title="Inspiration"></div>
+    </div>
+
+    <!-- Layout Principal -->
+    <div class="temple-modern">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Zone Conversation -->
+            <div class="zone zone-conversation">
+                <div class="zone-header">
+                    <div class="zone-icon">💬</div>
+                    <h2 class="zone-title">Conversation</h2>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message message-prometheus">
+                        <div class="message-avatar">
+                            <div class="avatar-modern avatar-prometheus avatar-écoute">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>Bienvenue dans l'univers infini des possibilités. Je suis ici pour co-créer avec vous.</div>
+                    </div>
+                    
+                    <div class="message message-user">
+                        <div>Salut Prometheus ! Montre-moi ce que tu peux faire.</div>
+                    </div>
+                    
+                    <div class="message message-prometheus">
+                        <div class="message-avatar">
+                            <div class="avatar-modern avatar-prometheus avatar-illumination">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>Découvrez à droite vos mondes, vos connaissances, et l'inspiration qui nous entoure.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zone Mondes -->
+            <div class="zone zone-mondes">
+                <div class="zone-header">
+                    <div class="zone-icon">🌍</div>
+                    <h2 class="zone-title">Vos Mondes</h2>
+                </div>
+                
+                <div class="mondes-grid">
+                    <div class="monde-card">
+                        <div class="monde-icon">🚀</div>
+                        <div class="monde-name">App Mobile</div>
+                        <div class="monde-stats">85%</div>
+                    </div>
+                    
+                    <div class="monde-card">
+                        <div class="monde-icon">🎨</div>
+                        <div class="monde-name">Art Platform</div>
+                        <div class="monde-stats">45%</div>
+                    </div>
+                    
+                    <div class="monde-card">
+                        <div class="monde-icon">📊</div>
+                        <div class="monde-name">Data Science</div>
+                        <div class="monde-stats">12%</div>
+                    </div>
+                    
+                    <div class="monde-card">
+                        <div class="monde-icon">✨</div>
+                        <div class="monde-name">Nouveau Monde</div>
+                        <div class="monde-stats">Créer</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Droit -->
+            <div class="right-panel">
+                <!-- Zone Connaissance -->
+                <div class="zone zone-connaissance">
+                    <div class="zone-header">
+                        <div class="zone-icon">🧠</div>
+                        <h2 class="zone-title">Connaissance</h2>
+                    </div>
+                    
+                    <div class="knowledge-grid">
+                        <div class="knowledge-item">
+                            <div class="knowledge-label">React Native</div>
+                            <div class="knowledge-value">+23%</div>
+                            <div class="knowledge-progress">
+                                <div class="knowledge-progress-bar" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="knowledge-item">
+                            <div class="knowledge-label">Firebase</div>
+                            <div class="knowledge-value">+18%</div>
+                            <div class="knowledge-progress">
+                                <div class="knowledge-progress-bar" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="knowledge-item">
+                            <div class="knowledge-label">UX Design</div>
+                            <div class="knowledge-value">+15%</div>
+                            <div class="knowledge-progress">
+                                <div class="knowledge-progress-bar" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zone Inspiration -->
+                <div class="zone zone-inspiration">
+                    <div class="zone-header">
+                        <div class="zone-icon">💡</div>
+                        <h2 class="zone-title">Inspiration</h2>
+                    </div>
+                    
+                    <div class="inspiration-grid">
+                        <div class="inspiration-item">
+                            <div class="inspiration-icon">🎨</div>
+                            <div>UI Trends</div>
+                        </div>
+                        
+                        <div class="inspiration-item">
+                            <div class="inspiration-icon">📱</div>
+                            <div>Apps</div>
+                        </div>
+                        
+                        <div class="inspiration-item">
+                            <div class="inspiration-icon">🔥</div>
+                            <div>Libs</div>
+                        </div>
+                        
+                        <div class="inspiration-item">
+                            <div class="inspiration-icon">💡</div>
+                            <div>Idées</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Zone - Bottom avec Gradient Blur -->
+        <div class="input-zone">
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        class="modern-input" 
+                        id="messageInput"
+                        placeholder="Exprimez votre intention..."
+                    />
+                </div>
+                <button class="send-button" id="sendButton">
+                    →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="avatar_suivi_curseur.js"></script>
+    <script>
+        // Génération des étoiles
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.opacity = Math.random() * 0.8 + 0.2;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Navigation dots
+        function setupNavigation() {
+            const dots = document.querySelectorAll('.nav-dot');
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const zone = dot.dataset.zone;
+                    
+                    // Update active state
+                    dots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    
+                    // Focus on zone (simple scroll)
+                    const zoneElement = document.querySelector(`.zone-${zone}`);
+                    if (zoneElement) {
+                        zoneElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        // Highlight effect
+                        zoneElement.style.transition = 'all 0.3s ease';
+                        zoneElement.style.borderColor = 'rgba(74, 144, 226, 0.5)';
+                        zoneElement.style.boxShadow = '0 0 20px rgba(74, 144, 226, 0.2)';
+                        
+                        setTimeout(() => {
+                            zoneElement.style.borderColor = '';
+                            zoneElement.style.boxShadow = '';
+                        }, 1000);
+                    }
+                });
+            });
+        }
+
+        // Chat functionality
+        function setupChat() {
+            const input = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            function sendMessage() {
+                const message = input.value.trim();
+                if (!message) return;
+                
+                // Add user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message message-user';
+                userMessage.textContent = message;
+                chatMessages.appendChild(userMessage);
+                
+                // Clear input
+                input.value = '';
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Simulate Prometheus response
+                setTimeout(() => {
+                    const prometheusMessage = document.createElement('div');
+                    prometheusMessage.className = 'message message-prometheus';
+                    
+                    const responses = [
+                        "Je comprends votre intention. Analysons cela ensemble.",
+                        "C'est une perspective intéressante. Explorons les possibilités.",
+                        "Je vois des patterns ici que nous pourrions exploiter.",
+                        "Laissez-moi vous montrer une approche créative.",
+                        "Excellent point. Voici comment nous pouvons l'optimiser."
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    
+                    prometheusMessage.innerHTML = `
+                        <div class="message-avatar">
+                            <div class="avatar-modern avatar-prometheus avatar-co-création">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>${randomResponse}</div>
+                    `;
+                    
+                    chatMessages.appendChild(prometheusMessage);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 800);
+            }
+            
+            sendButton.addEventListener('click', sendMessage);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+
+        // World cards interactions
+        function setupWorldCards() {
+            const worldCards = document.querySelectorAll('.monde-card');
+            
+            worldCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const worldName = card.querySelector('.monde-name').textContent;
+                    
+                    // Add message about the world
+                    const chatMessages = document.getElementById('chatMessages');
+                    const message = document.createElement('div');
+                    message.className = 'message message-prometheus';
+                    message.innerHTML = `
+                        <div class="message-avatar">
+                            <div class="avatar-modern avatar-prometheus avatar-réflexion">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>Vous avez sélectionné le monde "${worldName}". Voici ce que nous y avons accompli...</div>
+                    `;
+                    chatMessages.appendChild(message);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+            });
+        }
+
+        // Inspiration items
+        function setupInspiration() {
+            const inspirationItems = document.querySelectorAll('.inspiration-item');
+            
+            inspirationItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const idea = item.textContent.trim();
+                    
+                    // Add message about inspiration
+                    const chatMessages = document.getElementById('chatMessages');
+                    const message = document.createElement('div');
+                    message.className = 'message message-prometheus';
+                    message.innerHTML = `
+                        <div class="message-avatar">
+                            <div class="avatar-modern avatar-prometheus avatar-illumination">
+                                <div class="avatar-cristaux">
+                                    <div class="avatar-cœur">
+                                        <div class="avatar-yeux">
+                                            <div class="œil-gauche"></div>
+                                            <div class="œil-droit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>Prometheus</span>
+                        </div>
+                        <div>Inspiration "${idea}" ! Cela me donne des idées pour votre projet...</div>
+                    `;
+                    chatMessages.appendChild(message);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+            });
+        }
+
+        // Avatar interactions
+        function setupAvatar() {
+            const avatars = document.querySelectorAll('.avatar-prometheus');
+            const states = ['écoute', 'réflexion', 'illumination', 'co-création'];
+            
+            avatars.forEach(avatar => {
+                avatar.addEventListener('click', () => {
+                    const currentClass = Array.from(avatar.classList).find(cls => cls.startsWith('avatar-'));
+                    const currentState = currentClass ? currentClass.replace('avatar-', '') : 'écoute';
+                    const currentIndex = states.indexOf(currentState);
+                    const nextState = states[(currentIndex + 1) % states.length];
+                    
+                    avatar.classList.remove(`avatar-${currentState}`);
+                    avatar.classList.add(`avatar-${nextState}`);
+                });
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            generateStars();
+            setupNavigation();
+            setupChat();
+            setupWorldCards();
+            setupInspiration();
+            setupAvatar();
+            
+            // Focus input on load
+            document.getElementById('messageInput').focus();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key >= '1' && e.key <= '4') {
+                const dots = document.querySelectorAll('.nav-dot');
+                const index = parseInt(e.key) - 1;
+                if (dots[index]) {
+                    dots[index].click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

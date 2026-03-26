@@ -1,0 +1,337 @@
+/* Avatar Prometheus - Performance Optimisée 60fps */
+
+/* Base : GPU acceleration */
+.avatar-prometheus {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  /* Containment pour optimisation */
+  contain: layout style paint;
+  /* Composite layer */
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Utiliser transform au lieu de top/left pour 60fps */
+.avatar-cœur {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #FF6B35 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  /* Transform GPU-accelerated */
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform, scale;
+  /* Composite layer */
+  backface-visibility: hidden;
+}
+
+/* Rotation optimisée */
+.avatar-cristaux {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(26, 26, 46, 0.6);
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  /* Rotation GPU-accelerated */
+  transform: translateZ(0) rotate(0deg);
+  will-change: transform;
+  /* Composite layer */
+  backface-visibility: hidden;
+  contain: layout style paint;
+}
+
+/* Animations optimisées avec transform */
+@keyframes respiration-optimized {
+  0%, 100% { 
+    transform: translate3d(-50%, -50%, 0) scale(1); 
+    opacity: 0.8; 
+  }
+  50% { 
+    transform: translate3d(-50%, -50%, 0) scale(1.2); 
+    opacity: 1; 
+  }
+}
+
+@keyframes rotation-optimized {
+  from { 
+    transform: translateZ(0) rotate(0deg); 
+  }
+  to { 
+    transform: translateZ(0) rotate(360deg); 
+  }
+}
+
+@keyframes circuits-actifs-optimized {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: translateZ(0) scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateZ(0) scale(1.05);
+  }
+}
+
+@keyframes éclats-optimized {
+  0% { 
+    transform: translate3d(-50%, -50%, 0) scale(1); 
+    opacity: 1;
+  }
+  50% { 
+    transform: translate3d(-50%, -50%, 0) scale(1.5); 
+    opacity: 0.5;
+  }
+  100% { 
+    transform: translate3d(-50%, -50%, 0) scale(1); 
+    opacity: 1;
+  }
+}
+
+@keyframes danse-fluide-optimized {
+  0%, 100% { 
+    transform: translateZ(0) rotate(0deg) scale(1); 
+  }
+  25% { 
+    transform: translateZ(0) rotate(5deg) scale(1.1); 
+  }
+  50% { 
+    transform: translateZ(0) rotate(-5deg) scale(1); 
+  }
+  75% { 
+    transform: translateZ(0) rotate(3deg) scale(1.05); 
+  }
+}
+
+/* États avec animations optimisées */
+.avatar-écoute .avatar-cœur {
+  background: radial-gradient(circle, #1A1A2E 0%, transparent 70%);
+  animation: respiration-optimized 4s ease-in-out infinite;
+}
+
+.avatar-réflexion .avatar-cristaux {
+  border-color: rgba(255, 215, 0, 0.8);
+  animation: circuits-actifs-optimized 2s ease-in-out infinite;
+}
+
+.avatar-illumination .avatar-cœur {
+  background: radial-gradient(circle, #FFD700 0%, transparent 70%);
+  animation: éclats-optimized 1s ease-out infinite;
+}
+
+.avatar-co-création .avatar-cristaux {
+  border-color: rgba(255, 107, 53, 0.8);
+  animation: danse-fluide-optimized 3s ease-in-out infinite;
+}
+
+/* Yeux optimisés */
+.avatar-yeux {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  width: 12px;
+  height: 6px;
+  display: flex;
+  gap: 2px;
+  /* Composite layer */
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.œil-gauche, .œil-droit {
+  width: 4px;
+  height: 4px;
+  background: #FFD700;
+  border-radius: 50%;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform, scale;
+  backface-visibility: hidden;
+}
+
+/* Particules optimisées */
+.avatar-particules {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Composite layer */
+  backface-visibility: hidden;
+  contain: layout style paint;
+}
+
+.particule {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #FFD700;
+  border-radius: 50%;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Animations particules optimisées */
+@keyframes particules-calme-optimized {
+  0% { 
+    transform: translate3d(0, 0, 0) scale(0); 
+    opacity: 0; 
+  }
+  50% { 
+    transform: translate3d(10px, -10px, 0) scale(1); 
+    opacity: 0.6; 
+  }
+  100% { 
+    transform: translate3d(20px, -20px, 0) scale(0); 
+    opacity: 0; 
+  }
+}
+
+@keyframes particules-pensees-optimized {
+  0% { 
+    transform: translate3d(0, 0, 0) scale(0); 
+    opacity: 0; 
+  }
+  50% { 
+    transform: translate3d(-5px, -15px, 0) scale(1); 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: translate3d(-10px, -30px, 0) scale(0.5); 
+    opacity: 0; 
+  }
+}
+
+@keyframes particules-illumination-optimized {
+  0% { 
+    transform: translate3d(0, 0, 0) scale(0); 
+    opacity: 0; 
+  }
+  25% { 
+    transform: translate3d(15px, -15px, 0) scale(1.5); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate3d(30px, -30px, 0) scale(0); 
+    opacity: 0; 
+  }
+}
+
+@keyframes particules-creation-optimized {
+  0% { 
+    transform: translate3d(0, 0, 0) rotate(0deg); 
+    opacity: 0; 
+  }
+  50% { 
+    transform: translate3d(20px, -10px, 0) rotate(180deg); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate3d(40px, -20px, 0) rotate(360deg); 
+    opacity: 0; 
+  }
+}
+
+/* États particules optimisés */
+.avatar-écoute .particule {
+  background: #1A1A2E;
+  animation: particules-calme-optimized 4s infinite;
+}
+
+.avatar-réflexion .particule {
+  background: #FFD700;
+  animation: particules-pensees-optimized 3s infinite;
+}
+
+.avatar-illumination .particule {
+  background: #FFD700;
+  animation: particules-illumination-optimized 2s infinite;
+}
+
+.avatar-co-création .particule {
+  background: #FF6B35;
+  animation: particules-creation-optimized 1.5s infinite;
+}
+
+/* Hover optimisé */
+.avatar-prometheus:hover {
+  /* Transform GPU-accelerated */
+  transform: translateZ(0) scale(1.05);
+  will-change: transform;
+}
+
+/* Performance monitoring */
+.avatar-performance-monitor {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ff00;
+  padding: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 9999;
+  display: none; /* Mettre à block pour debugging */
+}
+
+/* Responsive optimization */
+@media (max-width: 768px) {
+  .avatar-prometheus {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .avatar-cœur {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Réduire les animations sur mobile */
+  .avatar-cristaux {
+    animation-duration: 30s; /* Plus lent */
+  }
+  
+  .avatar-particules {
+    display: none; /* Désactiver particules sur mobile */
+  }
+}
+
+/* Low-end device optimization */
+@media (prefers-reduced-motion: reduce), (max-width: 480px) {
+  .avatar-cristaux,
+  .avatar-cœur,
+  .particule {
+    animation: none !important;
+  }
+  
+  .avatar-prometheus:hover {
+    transform: none;
+  }
+}
+
+/* High DPI optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .avatar-prometheus {
+    /* Utiliser transform pour sub-pixel rendering */
+    transform: translateZ(0) scale(0.5);
+    transform-origin: top left;
+  }
+}
+
+/* Battery optimization */
+@media (prefers-reduced-data: reduce) {
+  .avatar-particules {
+    display: none;
+  }
+  
+  .avatar-cristaux {
+    border-width: 1px;
+  }
+}

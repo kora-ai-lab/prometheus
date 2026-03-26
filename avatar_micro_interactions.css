@@ -1,0 +1,239 @@
+/* Micro-interactions avancées pour Avatar Prometheus */
+
+/* Suivi oculaire - suit le curseur */
+.avatar-prometheus {
+  position: relative;
+  overflow: visible;
+}
+
+.avatar-yeux {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 6px;
+  display: flex;
+  gap: 2px;
+}
+
+.œil-gauche, .œil-droit {
+  width: 4px;
+  height: 4px;
+  background: #FFD700;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.1s ease-out;
+  transform-origin: center;
+}
+
+/* Pupilles qui suivent le curseur */
+.œil-gauche::before, .œil-droit::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #1A1A2E;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Clignement naturel */
+@keyframes clignement {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+.avatar-yeux.clignement .œil-gauche,
+.avatar-yeux.clignement .œil-droit {
+  animation: clignement 4s infinite;
+}
+
+/* Réactions au hover */
+.avatar-prometheus:hover .œil-gauche,
+.avatar-prometheus:hover .œil-droit {
+  transform: scale(1.2);
+  background: #FFD700;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+/* Réactions au click */
+.avatar-prometheus:active .œil-gauche,
+.avatar-prometheus:active .œil-droit {
+  transform: scale(0.8);
+}
+
+/* Expressions selon état */
+.avatar-écoute .œil-gauche,
+.avatar-écoute .œil-droit {
+  background: #1A1A2E;
+  animation: yeux-calme 3s ease-in-out infinite;
+}
+
+.avatar-réflexion .œil-gauche,
+.avatar-réflexion .œil-droit {
+  background: #FFD700;
+  animation: yeux-pensifs 2s ease-in-out infinite;
+}
+
+.avatar-illumination .œil-gauche,
+.avatar-illumination .œil-droit {
+  background: #FFD700;
+  animation: yeux-excites 1s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+}
+
+.avatar-co-création .œil-gauche,
+.avatar-co-création .œil-droit {
+  background: #FF6B35;
+  animation: yeux-joyeux 1.5s ease-in-out infinite;
+}
+
+/* Animations des yeux par état */
+@keyframes yeux-calme {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+@keyframes yeux-pensifs {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(5deg); }
+  75% { transform: translateY(2px) rotate(-5deg); }
+}
+
+@keyframes yeux-excites {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.2); }
+}
+
+@keyframes yeux-joyeux {
+  0%, 100% { transform: scale(1) translateY(0); }
+  25% { transform: scale(1.1) translateY(-1px); }
+  50% { transform: scale(1.2) translateY(0); }
+  75% { transform: scale(1.1) translateY(1px); }
+}
+
+/* Particules d'émotion */
+.avatar-particules {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particule {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #FFD700;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.avatar-écoute .particule {
+  background: #1A1A2E;
+  animation: particules-calme 4s infinite;
+}
+
+.avatar-réflexion .particule {
+  background: #FFD700;
+  animation: particules-pensees 3s infinite;
+}
+
+.avatar-illumination .particule {
+  background: #FFD700;
+  animation: particules-illumination 2s infinite;
+}
+
+.avatar-co-création .particule {
+  background: #FF6B35;
+  animation: particules-creation 1.5s infinite;
+}
+
+@keyframes particules-calme {
+  0% { transform: translate(0, 0); opacity: 0; }
+  50% { transform: translate(10px, -10px); opacity: 0.6; }
+  100% { transform: translate(20px, -20px); opacity: 0; }
+}
+
+@keyframes particules-pensees {
+  0% { transform: translate(0, 0) scale(0); opacity: 0; }
+  50% { transform: translate(-5px, -15px) scale(1); opacity: 0.8; }
+  100% { transform: translate(-10px, -30px) scale(0.5); opacity: 0; }
+}
+
+@keyframes particules-illumination {
+  0% { transform: translate(0, 0) scale(0); opacity: 0; }
+  25% { transform: translate(15px, -15px) scale(1.5); opacity: 1; }
+  100% { transform: translate(30px, -30px) scale(0); opacity: 0; }
+}
+
+@keyframes particules-creation {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  50% { transform: translate(20px, -10px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(40px, -20px) rotate(360deg); opacity: 0; }
+}
+
+/* Vibration subtile d'erreur */
+.avatar-prometheus.erreur {
+  animation: vibration 0.3s ease-in-out;
+}
+
+@keyframes vibration {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+/* Pulse de succès */
+.avatar-prometheus.succes {
+  animation: pulse-succes 0.6s ease-in-out;
+}
+
+@keyframes pulse-succes {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Tooltip contextuel */
+.avatar-tooltip {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 26, 46, 0.9);
+  color: #FFD700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+}
+
+.avatar-prometheus:hover .avatar-tooltip {
+  opacity: 1;
+}
+
+/* Effet de focus pour accessibilité */
+.avatar-prometheus:focus {
+  outline: 2px solid #FFD700;
+  outline-offset: 2px;
+}
+
+/* Réduction des mouvements pour accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .œil-gauche, .œil-droit,
+  .particule,
+  .avatar-cœur,
+  .avatar-cristaux {
+    animation: none !important;
+    transition: none !important;
+  }
+}

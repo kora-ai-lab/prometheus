@@ -1,0 +1,526 @@
+/* Interface Temple - Responsive Design */
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  .temple-creation {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 12px;
+    padding: 12px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  /* Zones empilées verticalement */
+  .zone-conversation {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 300px;
+  }
+
+  .zone-mondes {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 250px;
+  }
+
+  .zone-connaissance {
+    grid-column: 1;
+    grid-row: 3;
+    min-height: 200px;
+  }
+
+  .zone-inspiration {
+    grid-column: 1;
+    grid-row: 4;
+    min-height: 150px;
+  }
+
+  /* Navigation mobile */
+  .temple-nav {
+    bottom: 20px;
+    right: 20px;
+    top: auto;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-button {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+
+  /* Chat mobile */
+  .chat-messages {
+    max-height: 200px;
+  }
+
+  .message {
+    max-width: 90%;
+  }
+
+  .chat-input-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .chat-send {
+    width: 100%;
+  }
+
+  /* Mondes mobile */
+  .mondes-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 12px;
+  }
+
+  .monde-orb {
+    font-size: 12px;
+  }
+
+  .monde-icon {
+    font-size: 20px;
+  }
+
+  /* Connaissance mobile */
+  .connaissance-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .connaissance-card {
+    padding: 8px;
+  }
+
+  .connaissance-value {
+    font-size: 16px;
+  }
+
+  /* Inspiration mobile */
+  .inspiration-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .inspiration-card {
+    padding: 6px;
+    font-size: 11px;
+  }
+
+  /* Headers mobile */
+  .zone-header {
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+  }
+
+  .zone-title {
+    font-size: 14px;
+  }
+
+  .zone-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+
+  /* Breadcrumbs mobile */
+  .temple-breadcrumbs {
+    padding: 6px 12px;
+    font-size: 11px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Help modal mobile */
+  .navigation-help {
+    width: 90%;
+    max-width: none;
+    margin: 20px;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .temple-creation {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .zone-conversation {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .zone-mondes {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .zone-connaissance {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .zone-inspiration {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  /* Navigation tablet */
+  .temple-nav {
+    top: 20px;
+    right: 20px;
+    flex-direction: row;
+  }
+
+  .nav-button {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  /* Mondes tablet */
+  .mondes-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+
+  /* Chat tablet */
+  .chat-messages {
+    max-height: 250px;
+  }
+
+  /* Connaissance tablet */
+  .connaissance-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Inspiration tablet */
+  .inspiration-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .temple-creation {
+    grid-template-columns: 1.5fr 2fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  /* Optimisations desktop */
+  .zone-conversation {
+    min-width: 400px;
+  }
+
+  .zone-mondes {
+    min-width: 500px;
+  }
+
+  .mondes-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  /* Navigation desktop */
+  .temple-nav {
+    top: 20px;
+    right: 20px;
+  }
+
+  .nav-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Hover effects desktop */
+  .nav-button:hover {
+    transform: scale(1.1);
+  }
+
+  .zone-conversation:hover,
+  .zone-mondes:hover,
+  .zone-connaissance:hover,
+  .zone-inspiration:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .temple-creation {
+    grid-template-columns: 2fr 3fr;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .zone-conversation {
+    min-width: 500px;
+  }
+
+  .zone-mondes {
+    min-width: 600px;
+  }
+
+  /* Fonts plus grands sur grand écran */
+  .zone-title {
+    font-size: 18px;
+  }
+
+  .connaissance-value {
+    font-size: 20px;
+  }
+
+  .monde-name {
+    font-size: 14px;
+  }
+
+  /* Plus d'espace pour les interactions */
+  .chat-input {
+    font-size: 16px;
+    padding: 16px;
+  }
+
+  .monde-orb {
+    transition: all 0.3s ease;
+  }
+
+  .monde-orb:hover {
+    transform: scale(1.1);
+  }
+}
+
+/* Ultra-wide (1920px+) */
+@media (min-width: 1920px) {
+  .temple-creation {
+    max-width: 1800px;
+  }
+
+  .zone-conversation {
+    min-width: 600px;
+  }
+
+  .zone-mondes {
+    min-width: 800px;
+  }
+
+  /* Layout plus espacé */
+  .zone-conversation,
+  .zone-mondes,
+  .zone-connaissance,
+  .zone-inspiration {
+    padding: 24px;
+  }
+
+  /* Navigation adaptée */
+  .temple-nav {
+    top: 30px;
+    right: 30px;
+  }
+
+  .nav-button {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+}
+
+/* Orientation paysage mobile */
+@media (max-width: 767px) and (orientation: landscape) {
+  .temple-creation {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 100vh;
+  }
+
+  .zone-conversation {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .zone-mondes {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .zone-connaissance {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .zone-inspiration {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  /* Optimisations paysage */
+  .chat-messages {
+    max-height: 150px;
+  }
+
+  .zone-header {
+    margin-bottom: 8px;
+  }
+
+  .zone-title {
+    font-size: 12px;
+  }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .temple-creation {
+    /* Subpixel rendering */
+    transform: translateZ(0);
+  }
+
+  .nav-button,
+  .monde-orb,
+  .connaissance-card {
+    /* Crisper rendering */
+    backface-visibility: hidden;
+  }
+}
+
+/* Touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Plus grandes zones de touch pour mobile */
+  .nav-button {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
+
+  .monde-orb {
+    min-height: 80px;
+    min-width: 80px;
+  }
+
+  .inspiration-card {
+    padding: 12px;
+    min-height: 60px;
+  }
+
+  /* Pas de hover effects sur touch */
+  .nav-button:hover,
+  .monde-orb:hover,
+  .zone-conversation:hover,
+  .zone-mondes:hover,
+  .zone-connaissance:hover,
+  .zone-inspiration:hover {
+    transform: none;
+  }
+
+  /* Active states pour touch */
+  .nav-button:active,
+  .monde-orb:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Accessibility - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .temple-creation,
+  .zone-conversation,
+  .zone-mondes,
+  .zone-connaissance,
+  .zone-inspiration,
+  .nav-button,
+  .monde-orb,
+  .message,
+  .transition-overlay {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: light) {
+  .temple-creation {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    color: #333;
+  }
+
+  .zone-conversation,
+  .zone-mondes,
+  .zone-connaissance,
+  .zone-inspiration {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(255, 107, 53, 0.2);
+  }
+
+  .zone-title {
+    color: #FF6B35;
+  }
+
+  .message-prometheus {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+    border-color: rgba(255, 107, 53, 0.3);
+  }
+
+  .chat-input {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(255, 107, 53, 0.3);
+    color: #333;
+  }
+}
+
+/* Print styles */
+@media print {
+  .temple-nav,
+  .transition-overlay,
+  .chat-input-container {
+    display: none !important;
+  }
+
+  .temple-creation {
+    display: block;
+    height: auto;
+  }
+
+  .zone-conversation,
+  .zone-mondes,
+  .zone-connaissance,
+  .zone-inspiration {
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  .chat-messages {
+    max-height: none;
+  }
+}
+
+/* Performance optimizations pour mobile */
+@media (max-width: 767px) {
+  /* Réduire les animations sur mobile */
+  .avatar-cristaux {
+    animation-duration: 30s;
+  }
+
+  .particule {
+    display: none;
+  }
+
+  /* Simplifier les effets visuels */
+  .zone-conversation::before,
+  .zone-mondes::before,
+  .zone-connaissance::before,
+  .zone-inspiration::before {
+    display: none;
+  }
+
+  /* Optimiser les ombres */
+  .zone-conversation,
+  .zone-mondes,
+  .zone-connaissance,
+  .zone-inspiration {
+    box-shadow: none;
+  }
+}
