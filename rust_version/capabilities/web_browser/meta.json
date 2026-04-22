@@ -1,0 +1,25 @@
+{
+  "name": "web_browser",
+  "version": "0.1.0",
+  "description": "Allows Prometheus to interact with a web browser. Capabilities include navigation, clicking, typing, and extracting content.",
+  "command": "INTERNAL_WEB_DRIVER",
+  "parameters": {
+    "action": {
+      "type": "string",
+      "enum": ["navigate", "click", "type", "get_content", "get_visual"],
+      "description": "The action to perform in the browser."
+    },
+    "url": {
+      "type": "string",
+      "description": "The URL to navigate to (required for 'navigate' action)."
+    },
+    "selector": {
+      "type": "string",
+      "description": "The CSS selector for the element (required for 'click' and 'type' actions)."
+    },
+    "text": {
+      "type": "string",
+      "description": "The text to type into the input field (required for 'type' action)."
+    }
+  }
+}
