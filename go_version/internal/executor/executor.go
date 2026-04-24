@@ -1,0 +1,105 @@
+package executor
+
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"os"
+	"os/exec"
+	"runtime"
+	"strings"
+	"time"
+)
+
+type ExecOptions struct {
+	Timeout time.Duration
+	WorkDir string
+	Env     []string
+}
+
+type ExecResult struct {
+	Command  string
+	Stdout   string
+	Stderr   string
+	ExitCode int
+	Duration time.Duration
+	TimedOut bool
+}
+
+type Executor interface {
+	Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult
+}
+
+type ShellExecutor struct{}
+
+func NewShellExecutor() *ShellExecutor {
+	return &ShellExecutor{}
+}
+
+func (s *ShellExecutor) Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult {
+	return Execute(ctx, command, opts)
+}
+
+func Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult {
+	if opts.Timeout == 0 {
+		opts.Timeout = 5 * time.Minute
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, opts.Timeout)
+	defer cancel()
+
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.CommandContext(ctx, "cmd", "/C", command)
+	default:
+		cmd = exec.CommandContext(ctx, "sh", "-c", command)
+	}
+
+	if opts.WorkDir != "" {
+		cmd.Dir = opts.WorkDir
+	}
+	cmd.Env = append(os.Environ(), opts.Env...)
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	start := time.Now()
+	err := cmd.Run()
+	duration := time.Since(start)
+
+	result := &ExecResult{
+		Command:  command,
+		Stdout:   TruncateMid(stdout.String(), 50_000),
+		Stderr:   TruncateMid(stderr.String(), 20_000),
+		Duration: duration,
+		TimedOut: ctx.Err() == context.DeadlineExceeded,
+	}
+
+	if err == nil {
+		return result
+	}
+
+	if exitErr, ok := err.(*exec.ExitError); ok {
+		result.ExitCode = exitErr.ExitCode()
+	} else {
+		result.ExitCode = -1
+		if result.Stderr == "" {
+			result.Stderr = err.Error()
+		}
+	}
+
+	return result
+}
+
+func TruncateMid(s string, maxChars int) string {
+	if len(s) <= maxChars {
+		return s
+	}
+
+	half := maxChars * 2 / 5
+	skipped := s[half : len(s)-half]
+	return s[:half] + fmt.Sprintf("\n...[truncated %d lines]...\n", strings.Count(skipped, "\n")) + s[len(s)-half:]
+}

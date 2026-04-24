@@ -1,0 +1,22 @@
+project_name: prometheus
+
+builds:
+  - id: prometheus
+    main: ./cmd/prometheus
+    binary: prometheus
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+
+checksum:
+  name_template: checksums.txt
+
