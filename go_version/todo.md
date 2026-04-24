@@ -971,7 +971,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
 
 ### F.2 — System Prompt Complet · L'ADN de Prometheus ⚡
 
-- [~] **F.2.1** Créer `assets/prompts/system_v1.md` (embarqué via `//go:embed`)
+- [x] **F.2.1** Créer `assets/prompts/system_v1.md` (embarqué via `//go:embed`)
   ```markdown
   ---
   prometheus_prompt_version: 1
@@ -1002,7 +1002,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
      les alternatives possibles.
   ```
 
-- [~] **F.2.2** ⚡ Format de réponse JSON (dans `assets/prompts/system_v1.md`)
+- [x] **F.2.2** ⚡ Format de réponse JSON (dans `assets/prompts/system_v1.md`)
   ```json
   FORMAT DE RÉPONSE OBLIGATOIRE (toujours ce JSON, jamais autre chose) :
   {
@@ -1027,7 +1027,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   d'échappement et de caractères spéciaux.
   ```
 
-- [~] **F.2.3** ⚡ `internal/prompt/builder.go` — assemblage adaptatif
+- [x] **F.2.3** ⚡ `internal/prompt/builder.go` — assemblage adaptatif
   ```go
   // 5 blocs, budget adaptatif selon context window
 
@@ -1155,7 +1155,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   }
   ```
 
-- [~] **F.2.5** Versioning et rechargement du prompt utilisateur
+- [x] **F.2.5** Versioning et rechargement du prompt utilisateur
   ```go
   // Charger dans l'ordre :
   // 1. ~/.prometheus/prompts/system_v1.md (si existe et version compatible)
