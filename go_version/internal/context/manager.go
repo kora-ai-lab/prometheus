@@ -2,6 +2,7 @@ package context
 
 import (
 	stdcontext "context"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -119,4 +120,20 @@ func (m *Manager) Snapshot() map[string]any {
 		"hot_buffer":   m.hotBuffer,
 		"context_used": int(m.usageRatio() * float64(m.contextWindow)),
 	}
+}
+
+func (m *Manager) Restore(data map[string]any) error {
+	if data == nil {
+		return nil
+	}
+	if ws, ok := data["warm_summary"].(string); ok {
+		m.warmSummary = ws
+	}
+	if hb, ok := data["hot_buffer"].(string); ok {
+		var msgs []llm.Message
+		if err := json.Unmarshal([]byte(hb), &msgs); err == nil {
+			m.hotBuffer = msgs
+		}
+	}
+	return nil
 }
