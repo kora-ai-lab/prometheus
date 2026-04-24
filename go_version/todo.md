@@ -588,7 +588,7 @@ VÉRIFICATION   : SHA256 après chaque téléchargement
 REPRISE        : HTTP Range requests si téléchargement interrompu
 ```
 
-- [~] **F.1.1** ⚡ → P.2 Définir `internal/llm/embedded/extractor.go`
+- [x] **F.1.1** ⚡ → P.2 Définir `internal/llm/embedded/extractor.go`
   ```go
   // Extrait le llama-server embarqué vers ~/.prometheus/runtime/
   // Vérifie le SHA256 avant d'écraser une version existante
@@ -634,7 +634,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   }
   ```
 
-- [~] **F.1.2** ⚡ Définir `internal/llm/modelcatalog.go`
+- [x] **F.1.2** ⚡ Définir `internal/llm/modelcatalog.go`
   ```go
   type ModelEntry struct {
       Name          string
@@ -690,7 +690,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   }
   ```
 
-- [~] **F.1.3** ⚡ Définir `internal/llm/downloader.go` (Gap 7 fermé)
+- [x] **F.1.3** ⚡ Définir `internal/llm/downloader.go` (Gap 7 fermé)
   ```go
   // Téléchargement avec :
   // 1. Barre de progression (io.TeeReader + compteur d'octets)
@@ -752,7 +752,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   }
   ```
 
-- [~] **F.1.4** ⚡ Définir `internal/llm/llama_provider.go`
+- [x] **F.1.4** ⚡ Définir `internal/llm/llama_provider.go`
   ```go
   type LocalLlamaProvider struct {
       serverPath   string
@@ -850,7 +850,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   func (p *LocalLlamaProvider) HasVision() bool { return p.visionPort > 0 }
   ```
 
-- [~] **F.1.5** ⚡ Interfaces `ModelProvider` et `VisionProvider`
+- [x] **F.1.5** ⚡ Interfaces `ModelProvider` et `VisionProvider`
   ```go
   // internal/llm/provider.go
   type Message struct {
@@ -884,7 +884,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   // Providers cloud (Anthropic, Google) implémentent aussi HasVision() = true
   ```
 
-- [~] **F.1.6** Autres providers : `OllamaProvider`, `AnthropicProvider`, `GoogleProvider`
+- [x] **F.1.6** Autres providers : `OllamaProvider`, `AnthropicProvider`, `GoogleProvider`
   ```go
   // Tous implémentent ModelProvider
   // Tous pur Go (CGO_ENABLED=0), HTTP client standard
@@ -903,7 +903,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   // Local : pas de rate limit
   ```
 
-- [~] **F.1.7** `ProviderFactory` — auto-détection hiérarchique
+- [x] **F.1.7** `ProviderFactory` — auto-détection hiérarchique
   ```go
   // internal/llm/factory.go
   func AutoDetect(cfg *config.LLMConfig) (ModelProvider, error) {
@@ -937,7 +937,7 @@ REPRISE        : HTTP Range requests si téléchargement interrompu
   }
   ```
 
-- [~] **F.1.8** Premier lancement : `internal/llm/setup.go`
+- [x] **F.1.8** Premier lancement : `internal/llm/setup.go`
   ```go
   // Appelé si aucun modèle local trouvé
   func FirstRunSetup(env *discovery.EnvironmentProfile, ui UIWriter) error {
