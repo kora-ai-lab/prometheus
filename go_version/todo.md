@@ -1592,7 +1592,7 @@ Il est installé à la demande via Capability Engine si CDP est insuffisant.
     goreleaser.yml
   ```
 
-- [~] **T0.1.2** `go.mod` — dépendances Phase 0
+- [x] **T0.1.2** `go.mod` — dépendances Phase 0
   ```go
   module github.com/prometheus-dev/prometheus
 
@@ -1631,7 +1631,7 @@ Il est installé à la demande via Capability Engine si CDP est insuffisant.
   // Aucune dépendance CGO dans ce go.mod
   ```
 
-- [~] **T0.1.3** `Makefile` complet
+- [x] **T0.1.3** `Makefile` complet
   ```makefile
   BINARY    := prometheus
   LDFLAGS   := -ldflags="-s -w"
@@ -1708,7 +1708,7 @@ Il est installé à la demande via Capability Engine si CDP est insuffisant.
 
 ### T0.2 — Configuration ⚡ → T0.1
 
-- [~] **T0.2.1** `internal/config/config.go`
+- [x] **T0.2.1** `internal/config/config.go`
   ```go
   type Config struct {
       LLM      LLMConfig      `toml:"llm"`
@@ -1890,7 +1890,7 @@ Il est installé à la demande via Capability Engine si CDP est insuffisant.
 
 ### T0.4 — Environment Discovery ⚡ → T0.1
 
-- [~] **T0.4.1** `internal/discovery/discovery.go`
+- [x] **T0.4.1** `internal/discovery/discovery.go`
   ```go
   type EnvironmentProfile struct {
       OS             string    // "linux" | "darwin" | "windows"
@@ -1989,7 +1989,7 @@ Il est installé à la demande via Capability Engine si CDP est insuffisant.
   }
   ```
 
-- [~] **T0.5.3** ⚡ `internal/task/loop.go` — boucle principale
+- [x] **T0.5.3** ⚡ `internal/task/loop.go` — boucle principale
   ```go
   func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
       deps.Logger.LogTaskStart(t.ID, t.Goal)
@@ -2146,7 +2146,7 @@ Il est installé à la demande via Capability Engine si CDP est insuffisant.
 
 ### T0.6 — `main.go` Phase 0 ⚡ → T0.1 à T0.5, F.1
 
-- [~] **T0.6.1** Séquence de démarrage complète
+- [x] **T0.6.1** Séquence de démarrage complète
   ```go
   // cmd/prometheus/main.go
   func main() {
