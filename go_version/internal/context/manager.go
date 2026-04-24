@@ -112,3 +112,11 @@ func (m *Manager) CompactWithTimeout(timeout time.Duration) {
 	_ = ctx
 	m.compact()
 }
+
+func (m *Manager) Snapshot() map[string]any {
+	return map[string]any{
+		"warm_summary": m.warmSummary,
+		"hot_buffer":   m.hotBuffer,
+		"context_used": int(m.usageRatio() * float64(m.contextWindow)),
+	}
+}
