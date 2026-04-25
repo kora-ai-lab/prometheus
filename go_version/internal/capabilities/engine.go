@@ -20,6 +20,7 @@ type Engine struct {
 	logger    *logging.Logger
 	installed map[string]bool
 	mu        sync.Mutex
+	forge     *Forge
 }
 
 func NewEngine(execer executor.Executor, env *discovery.EnvironmentProfile, logger *logging.Logger) *Engine {
@@ -29,6 +30,10 @@ func NewEngine(execer executor.Executor, env *discovery.EnvironmentProfile, logg
 		logger:    logger,
 		installed: map[string]bool{},
 	}
+}
+
+func (e *Engine) SetForge(forge *Forge) {
+	e.forge = forge
 }
 
 func (e *Engine) Ensure(ctx context.Context, name string) error {
@@ -85,7 +90,21 @@ func (e *Engine) Ensure(ctx context.Context, name string) error {
 		fmt.Printf("Found %s online via %s\n", name, source)
 	}
 
-	// 5. Return not found (Forge will handle in T2.2)
+	// 5. Try Forge
+	if e.forge != nil {
+		result, err := e.forge.Forge(ctx, "create capability: "+name)
+		if err != nil {
+			return fmt.Errorf("forge failed for %q: %w", name, err)
+		}
+		if result != nil && result.Verified {
+			e.mu.Lock()
+			e.installed[name] = true
+			e.mu.Unlock()
+			return nil
+		}
+	}
+
+	// 6. Return not found
 	return fmt.Errorf("capability %q not found in registry, package managers, or online", name)
 }
 
