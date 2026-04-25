@@ -36,6 +36,10 @@ func (e *Engine) SetForge(forge *Forge) {
 	e.forge = forge
 }
 
+func (e *Engine) Execer() executor.Executor {
+	return e.execer
+}
+
 func (e *Engine) Ensure(ctx context.Context, name string) error {
 	if name == "" {
 		return fmt.Errorf("empty capability name")
