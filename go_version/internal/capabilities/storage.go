@@ -48,7 +48,7 @@ func (s *Storage) SaveTool(spec *Spec, code, testCode string) error {
 	}
 
 	meta := metaData{
-		Type:       "tool",
+		Type:       "forged",
 		Language:   spec.Language,
 		Name:       spec.Name,
 		Verified:   false,

@@ -55,7 +55,7 @@ func TestMain(t *testing.T) {
 	metaFile := filepath.Join(toolPath, "meta.toml")
 	content, err = os.ReadFile(metaFile)
 	require.NoError(t, err, "meta.toml should exist")
-	require.Contains(t, string(content), "type = 'tool'")
+	require.Contains(t, string(content), "type = 'forged'")
 	require.Contains(t, string(content), "name = 'test_tool'")
 	require.Contains(t, string(content), "language = 'go'")
 }
