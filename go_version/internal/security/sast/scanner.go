@@ -108,5 +108,5 @@ func (s *Scanner) ScanDir(ctx context.Context, dir string) ([]*FindingSet, error
 	return results, nil
 }
 
-func getInjectionRules() []*Rule { return nil }
-func getAuthRules() []*Rule { return nil }
+
+
