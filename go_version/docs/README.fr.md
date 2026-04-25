@@ -24,12 +24,13 @@ prometheus "Votre objectif ici"
 curl -fsSL https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.sh | sh
 ```
 
-### Option 2: Installateur MSI (Windows - Recommandé)
+### Option 2: Installateur Windows (Recommandé)
 
-Téléchargez et exécutez `prometheus-windows-amd64.msi` depuis [GitHub Releases](https://github.com/kora-ai-lab/prometheus/releases/latest). L'installateur va :
+Téléchargez et exécutez `prometheus-windows-amd64-setup.exe` depuis [GitHub Releases](https://github.com/kora-ai-lab/prometheus/releases/latest). L'installateur va :
 - Installer Prometheus dans Program Files
 - L'ajouter automatiquement à votre PATH
 - Créer des raccourcis dans le Menu Démarrer
+- Créer un raccourci sur le bureau (optionnel)
 
 ### Option 3: PowerShell (Windows)
 
@@ -88,7 +89,7 @@ prometheus --web  # Démarrer l'interface web
 
 Si Windows Defender détecte Prometheus comme malware :
 
-1. **Utilisez l'installateur MSI** - Les fichiers MSI ont une meilleure réputation que les exécutables bruts
+1. **Utilisez l'installateur Windows** - `prometheus-windows-amd64-setup.exe` a une meilleure réputation que les exécutables bruts
 2. **Ajoutez une exclusion :**
    - Ouvrez Sécurité Windows → Protection contre les virus et menaces → Gérer les paramètres
    - Faites défiler jusqu'à Exclusions → Ajouter ou supprimer des exclusions

@@ -24,12 +24,13 @@ prometheus "Your goal here"
 curl -fsSL https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.sh | sh
 ```
 
-### Option 2: MSI Installer (Windows - Recommended)
+### Option 2: Windows Installer (Recommended)
 
-Download and run `prometheus-windows-amd64.msi` from [GitHub Releases](https://github.com/kora-ai-lab/prometheus/releases/latest). The installer will:
+Download and run `prometheus-windows-amd64-setup.exe` from [GitHub Releases](https://github.com/kora-ai-lab/prometheus/releases/latest). The installer will:
 - Install Prometheus to Program Files
 - Add it to your PATH automatically
 - Create Start Menu shortcuts
+- Create desktop shortcut (optional)
 
 ### Option 3: PowerShell (Windows)
 
@@ -88,7 +89,7 @@ prometheus --web  # Start web UI
 
 If Windows Defender flags Prometheus as malware:
 
-1. **Use the MSI installer** - MSI files have better reputation than raw executables
+1. **Use the Windows installer** - `prometheus-windows-amd64-setup.exe` has better reputation than raw executables
 2. **Add an exclusion:**
    - Open Windows Security → Virus & threat protection → Manage settings
    - Scroll to Exclusions → Add or remove exclusions
