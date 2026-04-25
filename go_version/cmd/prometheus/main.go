@@ -96,16 +96,31 @@ func main() {
 			// No interactive terminal (likely double-clicked on Windows)
 			// Auto-launch web mode instead
 			fmt.Println("No terminal detected. Starting web UI...")
+			fmt.Println("Press Ctrl+C to stop...")
 			server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
+			if server == nil {
+				fmt.Println("Error: Failed to create web server")
+				fmt.Println("Press Enter to exit...")
+				fmt.Scanln()
+				return
+			}
 			fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
-			exitOnError(server.Start(), "starting web ui")
-			return
+			if err := server.Start(); err != nil {
+				fmt.Printf("Error starting web UI: %v\n", err)
+				fmt.Println("Press Enter to exit...")
+				fmt.Scanln()
+				return
+			}
+			// Keep server running
+			select {}
 		}
 		goal = line
-	}
-	if goal == "" {
-		fmt.Println("No goal provided.")
-		return
+		if goal == "" {
+			fmt.Println("No goal provided. Use 'prometheus --help' for usage.")
+			fmt.Println("Press Enter to exit...")
+			fmt.Scanln()
+			return
+		}
 	}
 
 	t := task.New(goal)
