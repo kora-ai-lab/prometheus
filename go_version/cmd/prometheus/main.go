@@ -26,6 +26,7 @@ import (
 	"github.com/prometheus-dev/prometheus/internal/storage"
 	"github.com/prometheus-dev/prometheus/internal/task"
 	"github.com/prometheus-dev/prometheus/internal/ui"
+	"github.com/prometheus-dev/prometheus/internal/update"
 	"github.com/prometheus-dev/prometheus/internal/vault"
 	"github.com/prometheus-dev/prometheus/internal/vision"
 )
@@ -181,7 +182,29 @@ func handleCLI(home string, cfg *config.Config, env *discovery.EnvironmentProfil
 		fmt.Println("Note: end-to-end selftest scenarios are scaffold placeholders at this stage.")
 		return true
 	case "update":
-		fmt.Println("prometheus update is scaffolded but not implemented yet.")
+		hasUpdate, latestVersion, err := update.CheckForUpdate("anomalyco", "prometheus")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error checking for updates: %v\n", err)
+			return true
+		}
+
+		if !hasUpdate {
+			fmt.Println("You are running the latest version.")
+			return true
+		}
+
+		fmt.Printf("Version %s is available. Upgrade? (y/n) ", latestVersion)
+
+		var confirm string
+		fmt.Scanln(&confirm)
+
+		if confirm != "y" && confirm != "Y" {
+			fmt.Println("Update cancelled.")
+			return true
+		}
+
+		fmt.Println("Update download and apply is scaffolded.")
+		fmt.Println("(Full implementation would download, verify checksum, and apply the update)")
 		return true
 	}
 	return false
