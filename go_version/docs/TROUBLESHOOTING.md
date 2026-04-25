@@ -44,5 +44,5 @@ prometheus --web --port 9090
 
 ## Getting Help
 
-- GitHub Issues: https://github.com/prometheus-dev/prometheus/issues
+- GitHub Issues: https://github.com/kora-ai-lab/prometheus/issues
 - Documentation: https://docs.prometheus.ai

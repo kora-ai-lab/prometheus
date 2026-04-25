@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 type TaskStatus string

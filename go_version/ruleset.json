@@ -1,0 +1,21 @@
+{
+  "name": "main-protection",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/heads/main"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "update_protection",
+      "setting": true
+    },
+    {
+      "type": "deletion_protection",
+      "setting": true
+    }
+  ]
+}

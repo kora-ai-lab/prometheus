@@ -14,8 +14,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 var ErrPlatformNotSupported = errors.New("embedded llama-server is not available on this platform")

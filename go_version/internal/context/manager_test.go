@@ -3,7 +3,7 @@ package context
 import (
 	"testing"
 
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 func TestManager_Snapshot(t *testing.T) {

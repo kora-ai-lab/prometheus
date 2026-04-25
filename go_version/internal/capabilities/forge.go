@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	ctxmgr "github.com/prometheus-dev/prometheus/internal/context"
+	ctxmgr "github.com/kora-ai-lab/prometheus/internal/context"
 )
 
 type ForgeResult struct {

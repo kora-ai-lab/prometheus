@@ -1,0 +1,228 @@
+GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 19 November 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+                            Preamble
+
+  The GNU Affero General Public License is a free, copyleft license for
+software, specifically designed to ensure cooperation with the community
+in the case of network software.
+
+  The "Program", below, refers to any program or work containing a
+notice placed by the copyright holder saying it may be distributed
+under the terms of this Affero General Public License.  The "Program"
+below refers to any such program or work, and a "work based on the
+Program" means either the Program or any derivative work under copyright
+law: that is to say, a work containing the Program or a portion of it,
+either verbatim or with modifications.
+
+  This license applies to the Program and any works which contain the
+Program or a portion of it, either verbatim or with modifications.
+
+  AGPL is designed to ensure that the modified source code of a networked
+server must be made available under the same license when requested by
+users accessing that server.
+
+  For more information on AGPL-3.0, see <https://www.gnu.org/licenses/>.
+
+                                TERMS
+
+  0. Definitions.
+
+  "This License" refers to version 3 of the GNU Affero General Public License.
+
+  "Copyright" also means copyright-like laws that apply to other kinds of
+works, such as semiconductor masks.
+
+  "The Program" refers to any copyrightable work licensed under this
+License.  Each licensee is addressed as "you".  "Licensees" and
+"recipients" may be individuals or organizations.
+
+  To "modify" a work means to copy from or adapt all or part of the work
+in a fashion requiring copyright permission.  Aside from the permissions
+copying the code gives you, modifying the work itself gives you
+permission to distribute the work if and only if you either:
+(a) the work includes the source code when you distribute it, or
+(b) the work includes the source code when you distribute it in or as a
+standalone program or a work meant for user interaction.
+
+  "Conveying" means communicating to the public by any means.
+
+  1. Source Code.
+
+  The "source code" for a work means the preferred form of the work for
+making modifications to it.  "Object code" means any non-source form of a
+work.
+
+  A " Standard Interface" means an interface that either is an official
+standard defined by a recognized standards body or, in the case of
+interfaces specified for a particular programming language, one that is
+widely used among developers working in that language.
+
+  The "System Libraries" of an executable work include anything, other
+than the work as a whole, that (a) is included in the normal form of
+packaging a Major Component, but which is not part of that Major
+Component, and (b) serves only to enable use of the work with that
+Major Component, or to implement a Standard Interface for which an
+implementation is available to the public in source code form.
+
+  The "Installation Information" means a file, script, or other data
+required to install and install modified version of a covered work in
+the user's existing environment.  It must list all the changes you made
+to the Program and indicate how to reverse them.
+
+  2. Basic Permissions.
+
+  All rights granted under this License are granted for the term of
+copyright on the Program, and are irrevocable provided the stated
+conditions are met.  This License explicitly affirms your unlimited
+permission to run the unmodified Program.  The output from running a
+covered work is covered by this License only if the output, given its
+content, constitutes a covered work.  This License acknowledges your
+rights of fair use or other equivalent provisions of copyright law.
+
+  You may make, run and propagate covered works that you do not
+convey, without conditions so long as your license otherwise remains
+in force.  You may convey covered works to others for the purpose of
+working on them, or make them available to third parties, provided
+that you also do at least one of the following:
+  a) Convey the object code in, or embodied in, a physical product
+     (including a physical distribution medium), accompanied by the
+     Installation Information.
+  b) Make the covered work available to third parties under terms
+     substantially similar to those of this License.
+  c) Convey the object code with, or with modifications, or directly
+     use the covered work as a basis for a service, if you also do
+     at least one of the following:
+     1) Provide complete source code as Installation Information, or
+     2) Offer to provide the source code within 30 days of request,
+        at no more than the cost of transmission.
+
+  3. Protecting Users' Legal Rights From Anti-Circumvention Law.
+
+  No covered work shall be deemed part of an effective technological
+measure under any applicable law fulfilling obligations under article
+11 of the WIPO copyright treaty adopted on 20 December 1996, or
+similar laws prohibiting or restricting circumvention of such
+measures.
+
+  4. Conveying Verbatim Copies.
+
+  You may convey verbatim copies of the Program's source code as you
+receive it, in any medium, provided that you conspicuously and
+appropriately publish on each copy an appropriate copyright notice;
+keep intact all notices stating this License and any disclaimer of
+warranty; keep intact all notices of the absence of any warranty;
+and give all recipients a copy of this License along with the Program.
+
+  5. Conveying Modified Source Versions.
+
+  You may convey a work based on the Program, or the modifications to
+produce it from the Program, in the form of source code under the
+terms of section 4, provided that you also meet all of these conditions:
+
+  a) The work must carry prominent notices stating that you modified
+     it, and giving a relevant date.
+  b) The work must contain significant changes from the original.
+  c) The source code for the work must include documentation describing
+     the nature and purpose of the modified work, the limitations of
+     the modifications, and how to revert them.
+
+  6. Conveying Non-Source Forms.
+
+  When you convey a covered work in a non-source form, you may
+convey it under the terms of sections 4 and 5, provided that you
+also provide the source code in a well-known manner on a custom
+physical product or a physical distribution medium, and offer to
+provide the source code within 30 days of request.
+
+  7. Additional Terms.
+
+  You may add additional clauses as exceptions to this License,
+provided they are narrowly drawn and do not conflict with the
+essential requirements of this License.
+
+  8. Termination.
+
+  This License terminates automatically if you fail to comply with
+any term or condition of this License.  Upon termination, your
+right to use the covered work also terminates.
+
+  9. License Not a Contract.
+
+  Nothing in this License shall be construed as limiting the
+licensor's rights under applicable law, and this License is not
+intended to grant any rights to you that did not exist before
+this License was issued.
+
+  10. Reciprocity.
+
+  If you receive covered works under this License from a licensee,
+and you add your own contributions to those works, the resulting
+combined work must also be licensed under AGPL-3.0.
+
+  11. No Warranty.
+
+  THE PROGRAM IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE PROGRAM OR THE USE OR
+OTHER DEALINGS IN THE PROGRAM.
+
+  12. Privacy and Data Protection.
+
+  Prometheus is designed with user privacy in mind.  Your code,
+context, and data are never sent to third parties without your
+explicit consent unless required for the functionality of the
+program.
+
+  13. Trademark.
+
+  "Prometheus" is a registered trademark of kora-ai-lab.  This
+License does not grant any rights to use the trademark "Prometheus"
+or the "kora-ai-lab" name, except for purposes of identification
+and attribution.
+
+  HOW TO APPLY THESE TERMS TO YOUR NEW PROGRAMS
+
+  If you develop a new program, and you want it to be of the greatest
+possible use to the public, the best way to achieve this is to make it
+free software which everyone can redistribute and change under these
+terms.
+
+  To do so, add the following notices to the program.  It is safest to
+attach them to the start of each source file to most effectively state
+the exclusion of warranty; and each file should have at least the
+"copyright" line and a pointer to where the full notice is found.
+
+    Prometheus - AI-first agent runtime
+    Copyright (C) 2025 kora-ai-lab
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public
+    License along with this program.  If not, see
+    <https://www.gnu.org/licenses/>.
+
+  Also add information on how to contact you by electronic and paper mail.
+
+  If your program can interact with users remotely through a network,
+you must also make sure that it provides a way for users to get a
+copy of the source code of your version.
+
+  The "source code" need to include any portions of this License
+that apply to your specific version.

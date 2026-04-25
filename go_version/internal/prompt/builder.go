@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/prometheus-dev/prometheus/internal/discovery"
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/discovery"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 type Builder struct {

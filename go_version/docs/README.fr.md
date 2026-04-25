@@ -4,28 +4,42 @@ Un runtime agent IA-first avec sécurité, observabilité et auto-évolution.
 
 ## Démarrage rapide
 
+**macOS/Linux :**
 ```bash
-# Installer
-curl -fsSL https://raw.githubusercontent.com/prometheus-dev/prometheus/main/scripts/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.sh | sh
+prometheus "Votre objectif ici"
+```
 
-# Exécuter
+**Windows (PowerShell) :**
+```powershell
+irm https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.ps1 | iex
 prometheus "Votre objectif ici"
 ```
 
 ## Installation
 
-### Option 1: curl | sh
+### Option 1: curl | sh (macOS/Linux)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/prometheus-dev/prometheus/main/scripts/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.sh | sh
 ```
 
-### Option 2: Compiler depuis les sources
+### Option 2: PowerShell (Windows)
+
+```powershell
+irm https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.ps1 | iex
+```
+
+### Option 3: Télécharger l'exe directement (Windows)
+
+Téléchargez `prometheus-windows-amd64.exe` depuis [GitHub Releases](https://github.com/kora-ai-lab/prometheus/releases/latest) et ajoutez-le à votre PATH.
+
+### Option 4: Compiler depuis les sources
 
 ```bash
-git clone https://github.com/prometheus-dev/prometheus
-cd prometheus
-go build -o prometheus ./cmd/prometheus
+git clone https://github.com/kora-ai-lab/prometheus
+cd prometheus/go_version
+go build -ldflags="-s -w" -o prometheus ./cmd/prometheus
 ```
 
 ## Configuration

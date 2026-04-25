@@ -6,7 +6,7 @@ import (
 
 func TestCheckForUpdate_GitHubUnreachable(t *testing.T) {
 	t.Skip("Requires network - run manually to test")
-	hasUpdate, latest, err := CheckForUpdate("anomalyco", "prometheus")
+	hasUpdate, latest, err := CheckForUpdate("kora-ai-lab", "prometheus")
 	if err != nil {
 		t.Logf("Expected network error or valid response: %v", err)
 	}

@@ -9,8 +9,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
-	"github.com/prometheus-dev/prometheus/internal/discovery"
+	"github.com/kora-ai-lab/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/discovery"
 )
 
 var ErrSetupRequired = errors.New("local model not configured")

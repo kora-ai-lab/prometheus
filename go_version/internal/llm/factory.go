@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/config"
 )
 
 type ErrNoLLMAvailable struct {

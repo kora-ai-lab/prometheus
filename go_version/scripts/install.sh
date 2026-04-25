@@ -2,7 +2,7 @@
 set -e
 
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
-RELEASE_URL="${RELEASE_URL:-https://github.com/prometheus-dev/prometheus/releases/latest/download}"
+RELEASE_URL="${RELEASE_URL:-https://github.com/kora-ai-lab/prometheus/releases/latest/download}"
 
 echo "Detecting platform..."
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"

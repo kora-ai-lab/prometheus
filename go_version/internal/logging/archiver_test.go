@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 func TestArchiver_New(t *testing.T) {

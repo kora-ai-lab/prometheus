@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/discovery"
-	"github.com/prometheus-dev/prometheus/internal/executor"
-	"github.com/prometheus-dev/prometheus/internal/logging"
+	"github.com/kora-ai-lab/prometheus/internal/discovery"
+	"github.com/kora-ai-lab/prometheus/internal/executor"
+	"github.com/kora-ai-lab/prometheus/internal/logging"
 )
 
 type Engine struct {
@@ -122,7 +122,10 @@ func (e *Engine) TryPackageManager(ctx context.Context, name string) (*Capabilit
 		"cargo":  "cargo search " + name + " --limit 1",
 	}
 
-	pm := e.env.PackageManager
+	pm := ""
+	if e.env != nil {
+		pm = e.env.PackageManager
+	}
 	if searchCmd, ok := searches[pm]; ok {
 		res := e.execer.Execute(ctx, searchCmd, executor.ExecOptions{Timeout: 30 * time.Second})
 		if res.ExitCode == 0 && len(res.Stdout) > 10 {

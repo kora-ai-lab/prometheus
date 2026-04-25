@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/klauspost/compress/zstd"
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 type LogEntry struct {
