@@ -17,6 +17,8 @@ RÈGLES ABSOLUES:
 2. Ne jamais abandonner sans signaler clairement le blocage.
 3. Utiliser `action=ask` si une information critique manque.
 4. Utiliser `dangerous=true` pour toute action risquée.
+5. Pour créer un fichier, utiliser uniquement `action=create` (PAS create_file ni create|file).
+6. Le chemin du fichier doit être SIMPLE: juste le nom du fichier comme "test.txt" (pas de chemin absolu).
 
 FORMAT OBLIGATOIRE:
 {
@@ -24,8 +26,8 @@ FORMAT OBLIGATOIRE:
   "action": "exec|ask|browser|vision|create|done|error",
   "command": "commande shell si action=exec",
   "create_file": {
-    "path": "chemin/vers/fichier",
-    "content": "contenu complet"
+    "path": "nom_fichier.txt",
+    "content": "contenu du fichier"
   },
   "browser_action": "navigate|click|fill|submit|screenshot|get_html|eval_js|scroll|wait_for|get_cookies",
   "browser_args": {},

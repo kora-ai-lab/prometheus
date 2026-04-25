@@ -25,6 +25,24 @@ func AutoDetect(cfg *config.LLMConfig, serverPath string) (ModelProvider, error)
 		return nil, ErrNoLLMAvailable{Hint: "missing llm config"}
 	}
 
+	// Cloud providers (fastest first)
+	if os.Getenv("GROQ_API_KEY") != "" {
+		return NewGroqProvider(os.Getenv("GROQ_API_KEY"), cfg.ModelName), nil
+	}
+	if os.Getenv("ANTHROPIC_API_KEY") != "" {
+		return NewAnthropicProvider(cfg.ModelName), nil
+	}
+	if os.Getenv("GOOGLE_API_KEY") != "" {
+		return NewGoogleProvider(cfg.ModelName), nil
+	}
+
+	// Try Ollama (local, slower but offline capable)
+	ollama := NewOllamaProvider(cfg.Endpoint, cfg.ModelName)
+	if ollama.IsAvailable() {
+		return ollama, nil
+	}
+
+	// Then try local GGUF (offline fallback, slower on CPU)
 	resolvedServerPath := resolveServerPath(cfg, serverPath)
 	if cfg.Provider == "local" && cfg.ModelPath != "" {
 		if _, err := os.Stat(cfg.ModelPath); err == nil {
@@ -34,23 +52,7 @@ func AutoDetect(cfg *config.LLMConfig, serverPath string) (ModelProvider, error)
 		}
 	}
 
-	ollama := NewOllamaProvider(cfg.Endpoint, cfg.ModelName)
-	if cfg.Provider == "ollama" || (cfg.Provider == "local" && ollama.IsAvailable()) {
-		if ollama.IsAvailable() {
-			return ollama, nil
-		}
-	}
-
-	if os.Getenv("ANTHROPIC_API_KEY") != "" {
-		return NewAnthropicProvider(cfg.ModelName), nil
-	}
-	if os.Getenv("GOOGLE_API_KEY") != "" {
-		return NewGoogleProvider(cfg.ModelName), nil
-	}
-
-	return nil, ErrNoLLMAvailable{
-		Hint: "configure Ollama, provide a supported API key, or add a real llama-server binary via embed or PROMETHEUS_LLM_SERVER_PATH",
-	}
+	return nil, ErrNoLLMAvailable{Hint: "start Ollama or configure a model"}
 }
 
 func postJSON(ctx context.Context, client *http.Client, url string, payload any) (io.ReadCloser, error) {

@@ -76,6 +76,48 @@ var VisionModels = []ModelEntry{
 	},
 }
 
+type ServerEntry struct {
+	Name         string
+	Version     string
+	Filename    string
+	SizeBytes  int64
+	URL        string
+	SHA256     string
+	Platforms  map[string]PlatformEntry
+}
+
+type PlatformEntry struct {
+	ZIPFilename string
+	ExeName   string
+}
+
+var LlamaServerEntry = &ServerEntry{
+	Name:        "llama-server",
+	Version:     "b7960",
+	Filename:    "llama-b7960-bin-win-cpu-x64.zip",
+	SizeBytes:   30_280_000,
+	URL:         "https://github.com/ggml-org/llama.cpp/releases/download/b7960/llama-b7960-bin-win-cpu-x64.zip",
+	SHA256:      "",
+	Platforms: map[string]PlatformEntry{
+		"windows/amd64": {
+			ZIPFilename: "llama-b7960-bin-win-cpu-x64.zip",
+			ExeName:    "llama-server.exe",
+		},
+		"linux/amd64": {
+			ZIPFilename: "llama-b7960-bin-ubuntu-x64.tar.gz",
+			ExeName:    "llama-server",
+		},
+		"darwin/amd64": {
+			ZIPFilename: "llama-b7960-bin-macos-x64.tar.gz",
+			ExeName:    "llama-server",
+		},
+		"darwin/arm64": {
+			ZIPFilename: "llama-b7960-bin-macos-arm64.tar.gz",
+			ExeName:    "llama-server",
+		},
+	},
+}
+
 func SelectModel(ramMb int) *ModelEntry {
 	switch {
 	case ramMb < 3000:

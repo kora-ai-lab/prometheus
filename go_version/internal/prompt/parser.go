@@ -21,8 +21,28 @@ type Action struct {
 }
 
 type CreateFileAction struct {
-	Path    string `json:"path"`
-	Content string `json:"content"`
+	Path       string `json:"path"`
+	FileName   string `json:"file_name,omitempty"`
+	NomFichier string `json:"nom_fichier,omitempty"`
+	Content    string `json:"content"`
+	Contenu    string `json:"contenu,omitempty"`
+}
+
+func (c *CreateFileAction) GetPath() string {
+	if c.Path != "" {
+		return c.Path
+	}
+	if c.FileName != "" {
+		return c.FileName
+	}
+	return c.NomFichier
+}
+
+func (c *CreateFileAction) GetContent() string {
+	if c.Content != "" {
+		return c.Content
+	}
+	return c.Contenu
 }
 
 type ParseError struct {
@@ -54,11 +74,18 @@ func ParseAction(raw string) (*Action, error) {
 	}
 
 	switch action.Action {
+	case "create_file", "create|file":
+		action.Action = "create"
+	case "crAcer_fichier", "creer_fichier":
+		action.Action = "create"
+	}
+
+	switch action.Action {
 	case "exec":
 		if action.Command == "" {
 			return nil, &ParseError{Raw: raw, Msg: "exec action missing command"}
 		}
-	case "create":
+	case "create", "create_file", "create|file":
 		if action.CreateFile == nil || action.CreateFile.Path == "" {
 			return nil, &ParseError{Raw: raw, Msg: "create action missing create_file"}
 		}

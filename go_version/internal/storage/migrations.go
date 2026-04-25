@@ -21,8 +21,54 @@ CREATE TABLE IF NOT EXISTS tasks (
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS executions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  task_id TEXT NOT NULL,
+  command TEXT NOT NULL,
+  stdout TEXT,
+  stderr TEXT,
+  exit_code INTEGER,
+  duration_ms INTEGER,
+  executed_at TEXT NOT NULL,
+  FOREIGN KEY(task_id) REFERENCES tasks(id)
+);
 CREATE TABLE IF NOT EXISTS schema_version (version INTEGER PRIMARY KEY);
 CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status);
+CREATE INDEX IF NOT EXISTS idx_exec_task ON executions(task_id);
+`,
+	},
+	{
+		Version: 2,
+		SQL: `
+CREATE TABLE IF NOT EXISTS user_prefs (
+  key TEXT PRIMARY KEY,
+  value TEXT,
+  updated_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learned_patterns (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  context TEXT,
+  pattern TEXT,
+  success_rate REAL DEFAULT 1.0,
+  uses INTEGER DEFAULT 1,
+  last_used TEXT
+);
+CREATE TABLE IF NOT EXISTS capabilities_cache (
+  name TEXT PRIMARY KEY,
+  installed INTEGER DEFAULT 0,
+  version TEXT,
+  path TEXT,
+  metadata_json TEXT,
+  installed_at TEXT
+);
+CREATE TABLE IF NOT EXISTS sessions (
+  id TEXT PRIMARY KEY,
+  date TEXT,
+  summary TEXT,
+  projects TEXT,
+  technologies TEXT,
+  created_at TEXT NOT NULL
+);
 `,
 	},
 }

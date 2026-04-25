@@ -1,0 +1,28 @@
+{
+  "model": "qwen2.5:1.5b",
+  "messages": [{"role": "user", "content": "Create file test.txt with OK. Respond in JSON with action=create and create_file with path and content."}],
+  "stream": false,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "PrometheusAction",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "required": ["thinking", "action", "create_file"],
+        "properties": {
+          "thinking": {"type": "string"},
+          "action": {"type": "string", "enum": ["create"]},
+          "create_file": {
+            "type": "object",
+            "properties": {
+              "path": {"type": "string"},
+              "content": {"type": "string"}
+            },
+            "required": ["path", "content"]
+          }
+        }
+      }
+    }
+  }
+}

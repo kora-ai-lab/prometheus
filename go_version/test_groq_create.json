@@ -1,0 +1,1 @@
+{"model":"llama-3.3-70b-versatile","messages":[{"role":"system","content":"You are Prometheus. Respond with JSON only."},{"role":"user","content":"Cree un fichier test.txt avec OK"}],"max_tokens":100}

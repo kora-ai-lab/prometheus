@@ -1,0 +1,1 @@
+{"model":"gemma4:e2b","messages":[{"role":"user","content":"Respond ONLY with valid JSON. Example: {\"answer\": \"OK\"}"}],"stream":false}

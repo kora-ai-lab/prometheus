@@ -61,13 +61,8 @@ func main() {
 	}
 
 	if cfg.LLM.ModelPath == "" {
-		setupErr := llm.FirstRunSetup(home, env, os.Stdout)
-		if setupErr == nil || errors.Is(setupErr, llm.ErrSetupRequired) {
-			cfg, err = config.Load(home)
-			exitOnError(err, "reloading config after setup")
-		} else {
-			exitOnError(setupErr, "running initial setup")
-		}
+		// Skip FirstRunSetup for now - use Ollama directly
+		// Users can run "prometheus setup" to configure GGUF manually
 	}
 
 	provider, err := llm.AutoDetect(&cfg.LLM, serverPath)

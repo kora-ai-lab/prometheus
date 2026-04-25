@@ -17,7 +17,11 @@ type Logger struct {
 }
 
 func New(home string) (*Logger, error) {
-	path := filepath.Join(home, "logs", time.Now().Format("2006-01-02")+".jsonl")
+	logDir := filepath.Join(home, "logs")
+	if err := os.MkdirAll(logDir, 0o700); err != nil {
+		return nil, err
+	}
+	path := filepath.Join(logDir, time.Now().Format("2006-01-02")+".jsonl")
 	file, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o600)
 	if err != nil {
 		return nil, err

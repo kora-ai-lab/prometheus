@@ -3,9 +3,9 @@ package llm
 import "context"
 
 type Message struct {
-	Role    string
-	Content string
-	Images  [][]byte
+	Role    string   `json:"role"`
+	Content string   `json:"content"`
+	Images  [][]byte `json:"images,omitempty"`
 }
 
 type Response struct {

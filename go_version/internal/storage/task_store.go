@@ -49,7 +49,13 @@ func Open(home string) (*Store, error) {
 }
 
 func (s *Store) runMigrations() error {
+	var currentVersion int
+	s.db.QueryRow("SELECT version FROM schema_version ORDER BY version DESC LIMIT 1").Scan(&currentVersion)
+
 	for _, migration := range migrations {
+		if migration.Version <= currentVersion {
+			continue
+		}
 		if _, err := s.db.Exec(migration.SQL); err != nil {
 			return err
 		}

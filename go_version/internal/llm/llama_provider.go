@@ -83,7 +83,10 @@ func (p *LocalLlamaProvider) start() error {
 	p.cmd = cmd
 
 	if err := p.waitReady(30 * time.Second); err != nil {
-		_ = p.Close()
+		if p.cmd != nil && p.cmd.Process != nil {
+			p.cmd.Process.Kill()
+		}
+		p.cmd = nil
 		return err
 	}
 	if info, err := p.fetchModelInfo(); err == nil && info != nil {
@@ -225,7 +228,7 @@ func NewOllamaProvider(endpoint, model string) *OllamaProvider {
 	return &OllamaProvider{
 		endpoint: endpoint,
 		model:    model,
-		client:   &http.Client{Timeout: 60 * time.Second},
+		client:   &http.Client{Timeout: 300 * time.Second},
 		info: &ModelInfo{
 			Name:          model,
 			ContextWindow: 8192,
@@ -235,9 +238,11 @@ func NewOllamaProvider(endpoint, model string) *OllamaProvider {
 }
 
 type ollamaRequest struct {
-	Model    string    `json:"model"`
-	Messages []Message `json:"messages"`
-	Stream   bool      `json:"stream"`
+	Model           string    `json:"model"`
+	Messages        []Message `json:"messages"`
+	Stream          bool      `json:"stream"`
+	ResponseFormat  any       `json:"response_format,omitempty"`
+	Temperature     float64   `json:"temperature,omitempty"`
 }
 
 type ollamaChatResponse struct {
@@ -298,6 +303,33 @@ func freePort() (int, error) {
 		return 0, errors.New("unexpected listener address")
 	}
 	return addr.Port, nil
+}
+
+func prometheusActionSchema() map[string]any {
+	return map[string]any{
+		"name": "PrometheusAction",
+		"strict": true,
+		"schema": map[string]any{
+			"type": "object",
+			"required": []string{"thinking", "action", "why"},
+			"properties": map[string]any{
+				"thinking":   map[string]any{"type": "string"},
+				"action":     map[string]any{"type": "string", "enum": []string{"exec", "ask", "browser", "vision", "create", "done", "error"}},
+				"command":    map[string]any{"type": "string"},
+				"dangerous":  map[string]any{"type": "boolean"},
+				"why":        map[string]any{"type": "string"},
+				"question":   map[string]any{"type": "string"},
+				"create_file": map[string]any{
+					"type": "object",
+					"properties": map[string]any{
+						"path":    map[string]any{"type": "string"},
+						"content": map[string]any{"type": "string"},
+					},
+					"required": []string{"path", "content"},
+				},
+			},
+		},
+	}
 }
 
 func filepathBase(path string) string {

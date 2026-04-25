@@ -23,12 +23,16 @@ func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
 		resp, err := deps.Provider.Complete(ctx, messages)
 		deps.Logger.LogLLMCall(t.ID, resp, time.Since(start))
 		if err != nil {
-			t.Retries++
-			if t.Retries >= t.MaxRetries {
+			errMsg := err.Error()
+			isRetryable := strings.Contains(errMsg, "context deadline exceeded") ||
+				strings.Contains(errMsg, "i/o timeout") ||
+				strings.Contains(errMsg, "Server closed connection")
+			if !isRetryable || t.Retries >= t.MaxRetries {
 				t.Status = StatusFailed
 				return deps.TaskStore.Save(t)
 			}
-			t.Context = append(t.Context, llm.Message{Role: "user", Content: "LLM error: " + err.Error()})
+			t.Retries++
+			t.Context = append(t.Context, llm.Message{Role: "user", Content: "LLM timeout, retrying..."})
 			continue
 		}
 
@@ -66,15 +70,36 @@ func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
 					}
 				}
 			}
-		case "create":
+		case "create", "create_file", "crAcer_fichier":
 			cf := action.CreateFile
-			if err := os.MkdirAll(filepath.Dir(cf.Path), 0o755); err != nil {
-				observation = "ERROR mkdir: " + err.Error()
-			} else if err := os.WriteFile(cf.Path, []byte(cf.Content), 0o644); err != nil {
-				observation = "ERROR write: " + err.Error()
+			if cf == nil && action.Command != "" {
+				cf = &prompt.CreateFileAction{
+					Path:    extractFilePath(action.Command),
+					Content: extractFileContent(action.Command),
+				}
+			}
+			if cf == nil || cf.GetPath() == "" {
+				observation = "ERROR: create action missing file info"
 			} else {
-				observation = fmt.Sprintf("FILE_CREATED: %s (%d bytes)", cf.Path, len(cf.Content))
-				deps.Logger.LogFileCreated(t.ID, cf.Path)
+				abs, _ := filepath.Abs(cf.GetPath())
+				dir := filepath.Dir(abs)
+				if dir != "." && dir != "" {
+					if err := os.MkdirAll(dir, 0o755); err != nil {
+						observation = "ERROR mkdir: " + err.Error()
+					} else if err := os.WriteFile(abs, []byte(cf.GetContent()), 0o644); err != nil {
+						observation = "ERROR write: " + err.Error()
+					} else {
+						observation = fmt.Sprintf("FILE_CREATED: %s (%d bytes)", abs, len(cf.GetContent()))
+						deps.Logger.LogFileCreated(t.ID, abs)
+					}
+				} else {
+					if err := os.WriteFile(abs, []byte(cf.GetContent()), 0o644); err != nil {
+						observation = "ERROR write: " + err.Error()
+					} else {
+						observation = fmt.Sprintf("FILE_CREATED: %s (%d bytes)", abs, len(cf.GetContent()))
+						deps.Logger.LogFileCreated(t.ID, abs)
+					}
+				}
 			}
 		case "browser":
 			observation = deps.Browser.Do(ctx, action)
@@ -131,4 +156,47 @@ func extractToolName(command string) string {
 		return ""
 	}
 	return fields[0]
+}
+
+func extractFilePath(command string) string {
+	fields := strings.Fields(command)
+	for i, f := range fields {
+		if f == ">" && i+1 < len(fields) {
+			return strings.TrimSpace(fields[i+1])
+		}
+		if f == "echo" && i+2 < len(fields) {
+			return strings.TrimSpace(fields[len(fields)-1])
+		}
+		if f == "touch" || f == "cat" || f == "new-item" {
+			if i+1 < len(fields) {
+				return strings.TrimSpace(fields[i+1])
+			}
+		}
+	}
+	if len(fields) >= 2 {
+		return strings.TrimSpace(fields[len(fields)-1])
+	}
+	return ""
+}
+
+func extractFileContent(command string) string {
+	fields := strings.Fields(command)
+	for i, f := range fields {
+		if f == ">" && i > 0 {
+			content := strings.Join(fields[:i], " ")
+			return strings.TrimSpace(content)
+		}
+		if f == "-Content" && i+1 < len(fields) {
+			return strings.TrimSpace(fields[i+1])
+		}
+	}
+	return ""
+}
+
+func totalChars(messages []llm.Message) int {
+	n := 0
+	for _, m := range messages {
+		n += len(m.Content)
+	}
+	return n
 }
