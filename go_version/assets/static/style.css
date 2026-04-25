@@ -1,52 +1,184 @@
-:root {
-  --bg: #f3ede0;
-  --fg: #1c2621;
-  --accent: #b24c2f;
-  --panel: rgba(255, 255, 255, 0.8);
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-* {
-  box-sizing: border-box;
+:root {
+  --bg: #0d1117;
+  --bg-panel: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --text-dim: #8b949e;
+  --primary: #58a6ff;
+  --success: #3fb950;
+  --error: #f85149;
 }
 
 body {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  color: var(--fg);
-  background:
-    radial-gradient(circle at top left, #fff7e8 0, transparent 35%),
-    linear-gradient(160deg, #d9e4d5 0%, var(--bg) 58%, #e7d5c0 100%);
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
   min-height: 100vh;
 }
 
-.shell {
-  width: min(920px, calc(100% - 2rem));
-  margin: 0 auto;
-  padding: 3rem 0 4rem;
+.header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
 }
 
-.eyebrow {
-  letter-spacing: 0.3em;
-  color: var(--accent);
-  margin: 0 0 0.5rem;
+.header h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 
-h1 {
-  margin: 0 0 0.75rem;
-  font-size: clamp(2rem, 5vw, 4rem);
+.nav {
+  display: flex;
+  gap: 0.5rem;
 }
 
-.subtle {
-  max-width: 56ch;
-  line-height: 1.5;
+.nav-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-btn.active,
+.nav-btn:hover {
+  background: var(--border);
+  border-color: var(--text-dim);
+}
+
+.main {
+  padding: 2rem;
 }
 
 .panel {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: var(--panel);
-  border: 1px solid rgba(28, 38, 33, 0.12);
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(28, 38, 33, 0.12);
+  display: none;
+  gap: 1.5rem;
 }
 
+.panel.active {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--bg-panel);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+#task-input {
+  min-height: 120px;
+  padding: 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn:hover { opacity: 0.9; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.output-area {
+  padding: 1.5rem;
+  background: var(--bg-panel);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.output pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.history {
+  padding: 1.5rem;
+  background: var(--bg-panel);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.metric-card {
+  padding: 1.5rem;
+  background: var(--bg-panel);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.metric-card h4 {
+  color: var(--text-dim);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+#settings-form {
+  max-width: 400px;
+  padding: 1.5rem;
+  background: var(--bg-panel);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-dim);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font: inherit;
+}

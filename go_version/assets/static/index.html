@@ -7,16 +7,67 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="shell">
-    <header>
-      <p class="eyebrow">PROMETHEUS</p>
-      <h1>Agent Runtime Scaffold</h1>
-      <p class="subtle">The web UI scaffold is wired for localhost-only delivery.</p>
+  <div class="app">
+    <header class="header">
+      <h1>PROMETHEUS</h1>
+      <nav class="nav">
+        <button class="nav-btn active" data-panel="tasks">Tasks</button>
+        <button class="nav-btn" data-panel="metrics">Metrics</button>
+        <button class="nav-btn" data-panel="settings">Settings</button>
+      </nav>
     </header>
-    <section id="app" class="panel">
-      <p>Prometheus Web UI scaffold is ready.</p>
-    </section>
-  </main>
+
+    <main class="main">
+      <section id="tasks-panel" class="panel active">
+        <div class="input-area">
+          <textarea id="task-input" placeholder="Describe your goal..."></textarea>
+          <button id="execute-btn" class="btn primary">Execute</button>
+        </div>
+        <div class="output-area">
+          <div id="output" class="output"></div>
+        </div>
+        <aside class="history">
+          <h3>Recent Tasks</h3>
+          <ul id="task-history"></ul>
+        </aside>
+      </section>
+
+      <section id="metrics-panel" class="panel">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <h4>RAM Usage</h4>
+            <p id="ram-usage" class="metric-value">--</p>
+          </div>
+          <div class="metric-card">
+            <h4>Tasks</h4>
+            <p id="task-count" class="metric-value">--</p>
+          </div>
+          <div class="metric-card">
+            <h4>LLM Calls</h4>
+            <p id="llm-calls" class="metric-value">--</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="settings-panel" class="panel">
+        <form id="settings-form">
+          <div class="form-group">
+            <label for="api-key">API Key</label>
+            <input type="password" id="api-key" name="api-key" placeholder="sk-...">
+          </div>
+          <div class="form-group">
+            <label for="model">Model</label>
+            <select id="model" name="model">
+              <option value="llama-3.1-70b">Llama 3.1 70B</option>
+              <option value="mixtral-8x7b">Mixtral 8x7B</option>
+              <option value="claude-3.5">Claude 3.5</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Save</button>
+        </form>
+      </section>
+    </main>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
