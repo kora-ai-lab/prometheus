@@ -82,6 +82,33 @@ prometheus --web  # Start web UI
 - Auto-confirmation for risky commands
 - Secrets redacted in logs
 
+## Troubleshooting
+
+### Windows Defender False Positive
+
+If Windows Defender flags Prometheus as malware:
+
+1. **Use the MSI installer** - MSI files have better reputation than raw executables
+2. **Add an exclusion:**
+   - Open Windows Security → Virus & threat protection → Manage settings
+   - Scroll to Exclusions → Add or remove exclusions
+   - Add the installation folder (e.g., `C:\Program Files\Prometheus`)
+3. **Submit to Microsoft:** Report the false positive at https://www.microsoft.com/en-us/wdsi/filesubmission
+
+### Installation Issues
+
+**"prometheus command not found"**
+- Close and reopen your terminal after installation
+- Or manually add to PATH: `setx PATH "%PATH%;C:\Program Files\Prometheus"`
+
+**Double-clicking .exe closes immediately**
+- Use the MSI installer instead
+- Or run from PowerShell: `.\prometheus-windows-amd64.exe --help`
+
+**Web UI not accessible**
+- Check if port 8080 is available: `netstat -ano | findstr :8080`
+- Use a different port: `prometheus --web --port 9090`
+
 ## Features
 
 - LLM code generation

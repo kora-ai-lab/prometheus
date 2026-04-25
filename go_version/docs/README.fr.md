@@ -82,6 +82,33 @@ prometheus --web  # Démarrer l'interface web
 - Auto-confirmation pour les commandes risqués
 - Secrets masqués dans les logs
 
+## Dépannage
+
+### Faux positif Windows Defender
+
+Si Windows Defender détecte Prometheus comme malware :
+
+1. **Utilisez l'installateur MSI** - Les fichiers MSI ont une meilleure réputation que les exécutables bruts
+2. **Ajoutez une exclusion :**
+   - Ouvrez Sécurité Windows → Protection contre les virus et menaces → Gérer les paramètres
+   - Faites défiler jusqu'à Exclusions → Ajouter ou supprimer des exclusions
+   - Ajoutez le dossier d'installation (ex: `C:\Program Files\Prometheus`)
+3. **Signalez à Microsoft :** Rapportez le faux positif sur https://www.microsoft.com/en-us/wdsi/filesubmission
+
+### Problèmes d'installation
+
+**"commande prometheus introuvable"**
+- Fermez et rouvrez votre terminal après l'installation
+- Ou ajoutez manuellement au PATH : `setx PATH "%PATH%;C:\Program Files\Prometheus"`
+
+**Double-clic sur l'exe ferme immédiatement**
+- Utilisez l'installateur MSI à la place
+- Ou lancez depuis PowerShell : `.\prometheus-windows-amd64.exe --help`
+
+**Interface web inaccessible**
+- Vérifiez si le port 8080 est disponible : `netstat -ano | findstr :8080`
+- Utilisez un autre port : `prometheus --web --port 9090`
+
 ## Fonctionnalités
 
 - Génération de code par LLM
