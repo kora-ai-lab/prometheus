@@ -5,10 +5,10 @@
 $ErrorActionPreference = "Stop"
 
 # Configuration
-$Version = "1.0.5"
-$SourceDir = "..\..\release"
+$Version = if ($env:GITHUB_REF -match 'refs/tags/v(.+)') { $matches[1] } else { "1.0.6" }
+$SourceDir = "..\release"
 $WxsFile = "prometheus.wxs"
-$OutputDir = "..\..\release"
+$OutputDir = "..\release"
 
 # Check if WiX is installed
 $WixPath = "${env:ProgramFiles(x86)}\WiX Toolset v3.11\bin"
