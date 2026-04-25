@@ -1,0 +1,10 @@
+/bin/
+.worktrees/
+*.db
+*.db-shm
+*.db-wal
+*.enc
+*.gguf
+coverage.out
+/internal/llm/embedded/checksums.sha256
+
