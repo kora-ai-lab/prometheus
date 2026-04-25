@@ -53,3 +53,12 @@ func TestCosineSimilarity(t *testing.T) {
 		t.Errorf("Expected 0, got %f", score)
 	}
 }
+
+func TestSearchEngine_SearchTemporal(t *testing.T) {
+	engine := NewSearchEngine("", nil)
+	results, err := engine.SearchTemporal(context.Background(), "aujourd'hui", 5)
+	if err != nil {
+		t.Errorf("SearchTemporal failed: %v", err)
+	}
+	_ = results
+}

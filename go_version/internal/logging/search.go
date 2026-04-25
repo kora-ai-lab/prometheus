@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/klauspost/compress/zstd"
@@ -49,6 +50,42 @@ func (s *SearchEngine) Search(ctx context.Context, query string, limit int) ([]S
 		return s.searchEmbedding(ctx, query, limit)
 	}
 	return s.searchBM25(tokens, limit), nil
+}
+
+func (s *SearchEngine) SearchTemporal(ctx context.Context, query string, limit int) ([]SearchResult, error) {
+	tq := ParseTemporalQuery(query)
+
+	var dates []string
+
+	if tq.StartDate != "" && tq.EndDate != "" {
+		start, _ := time.Parse("2006-01-02", tq.StartDate)
+		end, _ := time.Parse("2006-01-02", tq.EndDate)
+
+		for d := start; !d.After(end); d = d.AddDate(0, 0, 1) {
+			dates = append(dates, d.Format("2006-01-02"))
+		}
+	} else {
+		dates = []string{time.Now().Format("2006-01-02")}
+	}
+
+	for _, date := range dates {
+		dayEntries, err := loadDayEvents(date, s.logsDir)
+		if err != nil {
+			continue
+		}
+
+		for i, entry := range dayEntries {
+			id := docID(len(s.docStore) + i)
+			s.docStore[id] = entry
+
+			tokens := s.tokenize(s.entryToText(entry))
+			for _, token := range tokens {
+				s.index[token] = append(s.index[token], id)
+			}
+		}
+	}
+
+	return s.Search(ctx, query, limit)
 }
 
 func (s *SearchEngine) tokenize(text string) []string {
