@@ -71,7 +71,7 @@ func TestForge_Forge_Success(t *testing.T) {
 		testCode: "def test_hello(): assert True",
 	}
 
-	forge := NewForge(llm, storage, tester)
+	forge := NewForge(llm, storage, tester, nil)
 
 	result, err := forge.Forge(context.Background(), "create a test tool")
 
@@ -108,7 +108,7 @@ func TestForge_Forge_InvalidSpec(t *testing.T) {
 		},
 	}
 
-	forge := NewForge(llm, storage, tester)
+	forge := NewForge(llm, storage, tester, nil)
 
 	result, err := forge.Forge(context.Background(), "create a tool")
 
@@ -140,7 +140,7 @@ func TestForge_Forge_RetryOnTestFailure(t *testing.T) {
 		testCode: "def test_hello(): assert True",
 	}
 
-	forge := NewForge(llm, storage, tester)
+	forge := NewForge(llm, storage, tester, nil)
 
 	result, err := forge.Forge(context.Background(), "create a retry tool")
 
@@ -175,7 +175,7 @@ func TestForge_Forge_MaxRetries(t *testing.T) {
 		testCode: "def test_hello(): assert True",
 	}
 
-	forge := NewForge(llm, storage, tester)
+	forge := NewForge(llm, storage, tester, nil)
 
 	result, err := forge.Forge(context.Background(), "create a tool that always fails")
 
@@ -196,7 +196,7 @@ func TestForge_SpecGenerationError(t *testing.T) {
 		specErr: errors.New("spec generation failed"),
 	}
 
-	forge := NewForge(llm, storage, tester)
+	forge := NewForge(llm, storage, tester, nil)
 
 	result, err := forge.Forge(context.Background(), "create a tool")
 
@@ -224,7 +224,7 @@ func TestForge_CodeGenerationError(t *testing.T) {
 		codeErr: errors.New("code generation failed"),
 	}
 
-	forge := NewForge(llm, storage, tester)
+	forge := NewForge(llm, storage, tester, nil)
 
 	result, err := forge.Forge(context.Background(), "create a tool")
 

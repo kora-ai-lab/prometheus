@@ -3,6 +3,8 @@ package capabilities
 import (
 	"context"
 	"fmt"
+
+	ctxmgr "github.com/prometheus-dev/prometheus/internal/context"
 )
 
 type ForgeResult struct {
@@ -24,16 +26,18 @@ type TesterInterface interface {
 }
 
 type Forge struct {
-	llm     LLM
-	storage *Storage
-	tester  TesterInterface
+	llm            LLM
+	storage        *Storage
+	tester         TesterInterface
+	contextManager *ctxmgr.Manager
 }
 
-func NewForge(llm LLM, storage *Storage, tester TesterInterface) *Forge {
+func NewForge(llm LLM, storage *Storage, tester TesterInterface, contextManager *ctxmgr.Manager) *Forge {
 	return &Forge{
-		llm:     llm,
-		storage: storage,
-		tester:  tester,
+		llm:            llm,
+		storage:        storage,
+		tester:         tester,
+		contextManager: contextManager,
 	}
 }
 
@@ -73,12 +77,26 @@ func (f *Forge) Forge(ctx context.Context, task string) (*ForgeResult, error) {
 			return nil, fmt.Errorf("tests failed after %d attempts", maxRetries)
 		}
 
-		return &ForgeResult{
+		result := &ForgeResult{
 			Name:     spec.Name,
 			Path:     f.storage.GetPath(spec.Name),
 			Verified: true,
 			Language: spec.Language,
-		}, nil
+		}
+
+		Registry[result.Name] = Capability{
+			Name:        result.Name,
+			Type:        "forged",
+			InstallCmds: map[string]string{},
+			Description: "forged capability",
+		}
+
+		if f.contextManager != nil {
+			f.contextManager.AppendBlockC(fmt.Sprintf("- %s: %s | %s | %s/",
+				result.Name, spec.Description, result.Language, result.Path))
+		}
+
+		return result, nil
 	}
 
 	return nil, fmt.Errorf("failed after %d attempts: %w", maxRetries, lastErr)

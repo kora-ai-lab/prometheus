@@ -5,13 +5,27 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/prometheus-dev/prometheus/internal/llm"
 	"github.com/prometheus-dev/prometheus/internal/prompt"
 )
 
+type ContextStore interface {
+	SaveContext(ctx *ContextSnapshot) error
+	LoadContext() (*ContextSnapshot, error)
+}
+
+type ContextSnapshot struct {
+	SystemPrompt string
+	Timestamp    time.Time
+}
+
 type Manager struct {
+	mu            sync.Mutex
+	store         ContextStore
+	current       *ContextSnapshot
 	hotBuffer     []llm.Message
 	warmSummary   string
 	contextWindow int
@@ -136,4 +150,17 @@ func (m *Manager) Restore(data map[string]any) error {
 		}
 	}
 	return nil
+}
+
+func (m *Manager) AppendBlockC(entry string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	if m.current == nil {
+		return fmt.Errorf("no active context snapshot")
+	}
+
+	m.current.SystemPrompt += "\n\n## Forged Capabilities\n" + entry
+
+	return m.store.SaveContext(m.current)
 }
