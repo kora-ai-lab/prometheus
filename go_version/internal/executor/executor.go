@@ -9,6 +9,9 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/prometheus-dev/prometheus/internal/config"
+	"github.com/prometheus-dev/prometheus/internal/security"
 )
 
 type ExecOptions struct {
@@ -30,17 +33,39 @@ type Executor interface {
 	Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult
 }
 
-type ShellExecutor struct{}
+type ShellExecutor struct {
+	securityInterceptor *security.Interceptor
+}
 
 func NewShellExecutor() *ShellExecutor {
-	return &ShellExecutor{}
+	return &ShellExecutor{
+		securityInterceptor: security.New(config.SecurityConfig{
+			DangerousOpsConfirm: true,
+		}),
+	}
 }
 
 func (s *ShellExecutor) Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult {
-	return Execute(ctx, command, opts)
+	if s.securityInterceptor != nil {
+		if allowed, err := s.securityInterceptor.Allow(command); err != nil || !allowed {
+			stderr := err.Error()
+			if strings.Contains(stderr, "requires explicit confirmation") {
+				stderr = "SECURITY_CONFIRMATION_REQUIRED: " + stderr
+			} else {
+				stderr = "SECURITY_BLOCKED: " + stderr
+			}
+			return &ExecResult{
+				Command:  command,
+				ExitCode: -1,
+				Stderr:   stderr,
+			}
+		}
+	}
+
+	return executeImpl(ctx, command, opts)
 }
 
-func Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult {
+func executeImpl(ctx context.Context, command string, opts ExecOptions) *ExecResult {
 	if opts.Timeout == 0 {
 		opts.Timeout = 5 * time.Minute
 	}
@@ -92,6 +117,10 @@ func Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult 
 	}
 
 	return result
+}
+
+func Execute(ctx context.Context, command string, opts ExecOptions) *ExecResult {
+	return executeImpl(ctx, command, opts)
 }
 
 func TruncateMid(s string, maxChars int) string {
