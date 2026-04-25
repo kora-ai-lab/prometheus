@@ -108,10 +108,5 @@ func (s *Scanner) ScanDir(ctx context.Context, dir string) ([]*FindingSet, error
 	return results, nil
 }
 
-func getSecretsRules() []*Rule {
-	return []*Rule{
-		{ID: "secrets-api-key", Pattern: regexp.MustCompile(`sk-[a-zA-Z0-9]+`)},
-	}
-}
 func getInjectionRules() []*Rule { return nil }
 func getAuthRules() []*Rule { return nil }
