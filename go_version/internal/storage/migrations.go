@@ -71,4 +71,21 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 `,
 	},
+	{
+		Version: 3,
+		SQL: `
+CREATE TABLE IF NOT EXISTS log_index (
+  date TEXT NOT NULL,
+  month TEXT NOT NULL,
+  summary_md TEXT,
+  projects TEXT,
+  technologies TEXT,
+  goals TEXT,
+  indexed_at DATETIME
+);
+CREATE VIRTUAL TABLE IF NOT EXISTS log_search
+USING fts5(date, summary_md, projects, technologies, goals,
+           content='log_index', content_rowid='rowid');
+`,
+	},
 }
