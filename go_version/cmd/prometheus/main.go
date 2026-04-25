@@ -83,7 +83,7 @@ func main() {
 	_ = vault.New(filepath.Join(home, "vault.enc"))
 
 	if len(os.Args) > 1 && os.Args[1] == "--web" {
-		server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort)
+		server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
 		fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
 		exitOnError(server.Start(), "starting web ui")
 		return
