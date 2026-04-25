@@ -147,6 +147,20 @@ func handleCLI(home string, cfg *config.Config, env *discovery.EnvironmentProfil
 	}
 
 	switch os.Args[1] {
+	case "--help", "-h":
+		fmt.Println("Prometheus - AI-first agent runtime")
+		fmt.Println()
+		fmt.Println("Usage:")
+		fmt.Println("  prometheus [goal]           Run with a goal")
+		fmt.Println("  prometheus --web            Start web UI")
+		fmt.Println("  prometheus setup            First-time setup")
+		fmt.Println("  prometheus selftest         Run self-test")
+		fmt.Println("  prometheus update             Check for updates")
+		fmt.Println("  prometheus metrics          Show metrics")
+		fmt.Println("  prometheus logs [date]      Show logs")
+		fmt.Println("  prometheus vault list       List vault keys")
+		fmt.Println("  prometheus --help           Show this help")
+		return true
 	case "setup":
 		exitOnError(llm.FirstRunSetup(home, env, os.Stdout), "running setup")
 		return true
