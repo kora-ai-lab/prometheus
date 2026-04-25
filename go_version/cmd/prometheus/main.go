@@ -92,7 +92,15 @@ func main() {
 	goal := strings.TrimSpace(strings.Join(os.Args[1:], " "))
 	if goal == "" {
 		line, err := ui.ReadLine("> ")
-		exitOnError(err, "reading goal")
+		if err != nil {
+			// No interactive terminal (likely double-clicked on Windows)
+			// Auto-launch web mode instead
+			fmt.Println("No terminal detected. Starting web UI...")
+			server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
+			fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
+			exitOnError(server.Start(), "starting web ui")
+			return
+		}
 		goal = line
 	}
 	if goal == "" {
