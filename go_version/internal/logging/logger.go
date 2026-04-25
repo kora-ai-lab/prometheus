@@ -11,6 +11,26 @@ import (
 	"github.com/prometheus-dev/prometheus/internal/llm"
 )
 
+type StructuredEntry struct {
+	Timestamp string                 `json:"timestamp"`
+	Level     string                 `json:"level"`
+	TraceID   string                 `json:"trace_id,omitempty"`
+	SpanID   string                 `json:"span_id,omitempty"`
+	Logger   string                 `json:"logger"`
+	Message  string                 `json:"message"`
+	Fields   map[string]interface{} `json:",omitempty"`
+}
+
+func pairsToMap(fields ...interface{}) map[string]interface{} {
+	m := make(map[string]interface{})
+	for i := 0; i < len(fields); i += 2 {
+		if i+1 < len(fields) {
+			m[fields[i].(string)] = fields[i+1]
+		}
+	}
+	return m
+}
+
 type Logger struct {
 	mu          sync.Mutex
 	file        *os.File
@@ -229,6 +249,28 @@ func (l *Logger) LogBrowserAction(id, action string) {
 func (l *Logger) LogVisionCapture(id, target string) {
 	l.write("vision_capture", map[string]any{
 		"task_id": id,
-		"target":  target,
+		"target": target,
 	})
+}
+
+func (l *Logger) LogJSON(level, msg string, fields map[string]interface{}) {
+	entry := StructuredEntry{
+		Timestamp: time.Now().Format(time.RFC3339Nano),
+		Level:     level,
+		Logger:    "prometheus",
+		Message:  msg,
+		Fields:   fields,
+	}
+	jsonBytes, _ := json.Marshal(entry)
+	var payload map[string]any
+	_ = json.Unmarshal(jsonBytes, &payload)
+	l.write(level, payload)
+}
+
+func (l *Logger) Info(msg string, fields ...interface{}) {
+	l.LogJSON("INFO", msg, pairsToMap(fields...))
+}
+
+func (l *Logger) Error(msg string, fields ...interface{}) {
+	l.LogJSON("ERROR", msg, pairsToMap(fields...))
 }
