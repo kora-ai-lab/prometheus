@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/executor"
+	"github.com/kora-ai-lab/prometheus/internal/executor"
 )
 
 type TestResult struct {

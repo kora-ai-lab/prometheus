@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/capabilities"
-	"github.com/prometheus-dev/prometheus/internal/prompt"
-	"github.com/prometheus-dev/prometheus/internal/vision"
+	"github.com/kora-ai-lab/prometheus/internal/capabilities"
+	"github.com/kora-ai-lab/prometheus/internal/prompt"
+	"github.com/kora-ai-lab/prometheus/internal/vision"
 )
 
 type Manager struct {

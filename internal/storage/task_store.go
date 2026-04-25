@@ -10,8 +10,8 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"github.com/prometheus-dev/prometheus/internal/llm"
-	"github.com/prometheus-dev/prometheus/internal/task"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/task"
 )
 
 type TaskStore interface {

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/config"
 )
 
 //go:embed system_default.md

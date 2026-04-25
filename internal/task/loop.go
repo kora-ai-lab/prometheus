@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/executor"
-	"github.com/prometheus-dev/prometheus/internal/llm"
-	"github.com/prometheus-dev/prometheus/internal/prompt"
+	"github.com/kora-ai-lab/prometheus/internal/executor"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/prompt"
 )
 
 func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {

@@ -48,6 +48,5 @@ jobs:
         with:
           files: prometheus-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
           draft: true
-          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/llm"
-	"github.com/prometheus-dev/prometheus/internal/prompt"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/prompt"
 )
 
 type ContextStore interface {

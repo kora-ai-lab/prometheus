@@ -3,7 +3,7 @@ package security
 import (
 	"testing"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/config"
 )
 
 func TestInterceptor_Allow_SafeCommand(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/config"
 )
 
 type Interceptor struct {

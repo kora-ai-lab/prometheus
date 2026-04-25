@@ -1,14 +1,14 @@
 package task
 
 import (
-	"github.com/prometheus-dev/prometheus/internal/browser"
-	"github.com/prometheus-dev/prometheus/internal/capabilities"
-	"github.com/prometheus-dev/prometheus/internal/executor"
-	"github.com/prometheus-dev/prometheus/internal/llm"
-	"github.com/prometheus-dev/prometheus/internal/logging"
-	"github.com/prometheus-dev/prometheus/internal/prompt"
-	"github.com/prometheus-dev/prometheus/internal/security"
-	"github.com/prometheus-dev/prometheus/internal/vision"
+	"github.com/kora-ai-lab/prometheus/internal/browser"
+	"github.com/kora-ai-lab/prometheus/internal/capabilities"
+	"github.com/kora-ai-lab/prometheus/internal/executor"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/logging"
+	"github.com/kora-ai-lab/prometheus/internal/prompt"
+	"github.com/kora-ai-lab/prometheus/internal/security"
+	"github.com/kora-ai-lab/prometheus/internal/vision"
 )
 
 type TaskStore interface {

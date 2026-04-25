@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 var nowFunc = func() time.Time {

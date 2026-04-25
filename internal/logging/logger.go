@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/executor"
-	"github.com/prometheus-dev/prometheus/internal/llm"
+	"github.com/kora-ai-lab/prometheus/internal/executor"
+	"github.com/kora-ai-lab/prometheus/internal/llm"
 )
 
 type StructuredEntry struct {

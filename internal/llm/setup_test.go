@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
-	"github.com/prometheus-dev/prometheus/internal/discovery"
+	"github.com/kora-ai-lab/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/discovery"
 )
 
 func TestFirstRunSetupUsesExistingModel(t *testing.T) {

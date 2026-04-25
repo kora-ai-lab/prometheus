@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/discovery"
-	"github.com/prometheus-dev/prometheus/internal/executor"
-	"github.com/prometheus-dev/prometheus/internal/logging"
+	"github.com/kora-ai-lab/prometheus/internal/discovery"
+	"github.com/kora-ai-lab/prometheus/internal/executor"
+	"github.com/kora-ai-lab/prometheus/internal/logging"
 )
 
 type Engine struct {

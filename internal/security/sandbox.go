@@ -3,6 +3,7 @@ package security
 import (
 	"context"
 	"os/exec"
+	"runtime"
 	"time"
 )
 
@@ -36,7 +37,10 @@ type Sandbox interface {
 }
 
 func NewSandbox(cfg SandboxConfig) Sandbox {
-	return &WorkdirSandbox{cfg: cfg}
+	if runtime.GOOS == "linux" && canUseNamespaces() {
+		return newNamespaceSandbox(cfg)
+	}
+return &WorkdirSandbox{cfg: cfg}
 }
 
 type WorkdirSandbox struct {

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prometheus-dev/prometheus/internal/config"
-	"github.com/prometheus-dev/prometheus/internal/security"
+	"github.com/kora-ai-lab/prometheus/internal/config"
+	"github.com/kora-ai-lab/prometheus/internal/security"
 )
 
 type ExecOptions struct {
