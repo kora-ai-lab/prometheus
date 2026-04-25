@@ -99,6 +99,10 @@ jobs:
         run: |
           choco install innosetup -y
 
+      - name: Copy binary for installer
+        run: |
+          Copy-Item go_version/release/prometheus-windows-amd64.exe go_version/scripts/windows/prometheus-windows-amd64.exe
+
       - name: Build Installer
         working-directory: ./go_version/scripts/windows
         run: |
