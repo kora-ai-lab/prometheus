@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache: true
+
+      - name: Run tests
+        run: go test ./... -v -race
+
+      - name: Build
+        run: go build -ldflags="-s -w" -o prometheus ./cmd/prometheus
+
+      - name: Verify binary size
+        run: |
+          SIZE=$(stat -c%s prometheus)
+          echo "Binary size: $SIZE bytes"
+          if [ $SIZE -gt 26214400 ]; then
+            echo "ERROR: Binary exceeds 25MB limit"
+            exit 1
+          fi
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Go vet
+        run: go vet ./...
+
+      - name: Run staticcheck
+        run: |
+          go install honnef.co/tools/cmd/staticcheck@latest
+          staticcheck ./...
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache: true
+
+      - name: Run golangci-lint
+        run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          golangci-lint run --timeout=5m
