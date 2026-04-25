@@ -24,17 +24,26 @@ prometheus "Your goal here"
 curl -fsSL https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.sh | sh
 ```
 
-### Option 2: PowerShell (Windows)
+### Option 2: MSI Installer (Windows - Recommended)
+
+Download and run `prometheus-windows-amd64.msi` from [GitHub Releases](https://github.com/kora-ai-lab/prometheus/releases/latest). The installer will:
+- Install Prometheus to Program Files
+- Add it to your PATH automatically
+- Create Start Menu shortcuts
+
+### Option 3: PowerShell (Windows)
 
 ```powershell
 irm https://raw.githubusercontent.com/kora-ai-lab/prometheus/main/scripts/install.ps1 | iex
 ```
 
-### Option 3: Download .exe directly (Windows)
+### Option 4: Download .exe directly (Windows)
 
 Download the latest `prometheus-windows-amd64.exe` from [GitHub Releases](https://github.com/kora-ai-lab/prometheus/releases/latest) and add it to your PATH.
 
-### Option 4: Build from source
+> **Note:** Windows Defender may flag the executable as a false positive. This is expected for unsigned binaries. Use the MSI installer for better compatibility, or add an exclusion if needed.
+
+### Option 5: Build from source
 
 ```bash
 git clone https://github.com/kora-ai-lab/prometheus

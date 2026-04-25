@@ -46,7 +46,7 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
         run: |
           output="prometheus-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.suffix }}"
-          go build -ldflags="-s -w" -o "$output" ./cmd/prometheus
+          go build -trimpath -ldflags="-s -w" -o "$output" ./cmd/prometheus
 
       - name: Calculate checksum
         working-directory: ./go_version
@@ -79,5 +79,52 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-msi:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Windows binary
+        uses: actions/download-artifact@v4
+        with:
+          name: prometheus-windows-amd64
+          path: go_version/release
+
+      - name: Install WiX Toolset
+        run: |
+          choco install wixtoolset -y
+
+      - name: Build MSI
+        working-directory: ./go_version/scripts/windows
+        run: |
+          powershell -ExecutionPolicy Bypass -File build-msi.ps1
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prometheus-windows-msi
+          path: go_version/release/prometheus-windows-amd64.msi
+
+  release-msi:
+    needs: build-msi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download MSI
+        uses: actions/download-artifact@v4
+        with:
+          name: prometheus-windows-msi
+          path: artifacts
+
+      - name: Upload MSI to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifacts/*
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
