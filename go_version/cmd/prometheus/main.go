@@ -117,6 +117,7 @@ func main() {
 					return
 				}
 				// Keep server running - block forever
+				fmt.Println("Server is running. Press Ctrl+C to stop.")
 				done := make(chan bool)
 				<-done
 			}
