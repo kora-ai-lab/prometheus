@@ -111,7 +111,7 @@ jobs:
       - name: Upload Installer to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: go_version/scripts/windows/Output/prometheus-windows-amd64-setup.exe
+          files: go_version/scripts/windows/Output/prometheus-setup.exe
           draft: false
           prerelease: false
         env:
