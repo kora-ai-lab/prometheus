@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"path/filepath"
 )
 
@@ -22,7 +23,35 @@ func NewWebServer(host string, port int, executor interface{}, metrics interface
 	mux.HandleFunc("/api/metrics", handleMetrics(metrics))
 	mux.HandleFunc("/api/settings", handleSettings(config))
 
-	fileServer := http.FileServer(http.Dir("assets/static"))
+	// Resolve assets path relative to executable
+	exePath, err := os.Executable()
+	if err != nil {
+		exePath = os.Args[0]
+	}
+	exeDir := filepath.Dir(exePath)
+	
+	// Try multiple possible locations for assets
+	assetPaths := []string{
+		filepath.Join(exeDir, "assets", "static"),
+		filepath.Join(exeDir, "..", "assets", "static"),
+		filepath.Join(exeDir, "..", "..", "assets", "static"),
+		"assets/static",
+	}
+	
+	var assetsDir string
+	for _, path := range assetPaths {
+		if _, err := os.Stat(path); err == nil {
+			assetsDir = path
+			break
+		}
+	}
+	
+	if assetsDir == "" {
+		// Fallback to exe directory
+		assetsDir = exeDir
+	}
+	
+	fileServer := http.FileServer(http.Dir(assetsDir))
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	mux.Handle("/", fileServer)
 

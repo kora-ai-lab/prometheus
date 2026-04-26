@@ -20,6 +20,7 @@ UninstallDisplayIcon={app}\prometheus.exe
 
 [Files]
 Source: "prometheus-windows-amd64.exe"; DestDir: "{app}"; DestName: "prometheus.exe"; Flags: ignoreversion
+Source: "..\..\assets\static\*"; DestDir: "{app}\assets\static"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{group}\Prometheus"; Filename: "{app}\prometheus.exe"
@@ -28,9 +29,13 @@ Name: "{commondesktop}\Prometheus"; Filename: "{app}\prometheus.exe"; Tasks: des
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop icon"; GroupDescription: "Additional icons:"; Flags: unchecked
+Name: "autolaunch"; Description: "Launch Prometheus after installation"; GroupDescription: "Additional options:"; Flags: unchecked
 
 [Registry]
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{app};{olddata}"; Check: NeedsAddPath(ExpandConstant('{app}'))
+
+[Run]
+Filename: "{app}\prometheus.exe"; Description: "Launch Prometheus"; Tasks: autolaunch; Flags: nowait postinstall skipifsilent
 
 [Code]
 function NeedsAddPath(Param: string): boolean;
