@@ -116,8 +116,9 @@ func main() {
 					fmt.Scanln()
 					return
 				}
-				// Keep server running
-				select {}
+				// Keep server running - block forever
+				done := make(chan bool)
+				<-done
 			}
 			goal = line
 			if goal != "" {
