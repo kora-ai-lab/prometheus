@@ -95,8 +95,10 @@ func main() {
 		if err != nil {
 			// No interactive terminal (likely double-clicked on Windows)
 			// Auto-launch web mode instead
+			fmt.Println("=== Prometheus AI Agent ===")
 			fmt.Println("No terminal detected. Starting web UI...")
 			fmt.Println("Press Ctrl+C to stop...")
+			fmt.Println()
 			server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
 			if server == nil {
 				fmt.Println("Error: Failed to create web server")
@@ -105,6 +107,8 @@ func main() {
 				return
 			}
 			fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
+			fmt.Println("Open this URL in your browser to use Prometheus.")
+			fmt.Println()
 			if err := server.Start(); err != nil {
 				fmt.Printf("Error starting web UI: %v\n", err)
 				fmt.Println("Press Enter to exit...")
