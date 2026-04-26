@@ -48,6 +48,15 @@ jobs:
           output="prometheus-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.suffix }}"
           go build -trimpath -ldflags="-s -w" -o "$output" ./cmd/prometheus
 
+      - name: Build desktop version (Windows only)
+        if: matrix.goos == 'windows'
+        working-directory: ./go_version
+        env:
+          GOOS: windows
+          GOARCH: amd64
+        run: |
+          go build -trimpath -ldflags="-s -w" -o "prometheus-desktop.exe" ./cmd/prometheus-desktop
+
       - name: Calculate checksum
         working-directory: ./go_version
         run: |
@@ -61,6 +70,8 @@ jobs:
           path: |
             go_version/prometheus-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.suffix }}
             go_version/prometheus-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.suffix }}.sha256
+            go_version/prometheus-desktop.exe
+        if: matrix.goos == 'windows'
 
   release:
     needs: build
@@ -102,6 +113,7 @@ jobs:
       - name: Copy binary for installer
         run: |
           Copy-Item go_version/release/prometheus-windows-amd64.exe go_version/scripts/windows/prometheus-windows-amd64.exe
+          Copy-Item go_version/release/prometheus-desktop.exe go_version/scripts/windows/prometheus-desktop.exe
 
       - name: Build Installer
         working-directory: ./go_version/scripts/windows

@@ -20,12 +20,14 @@ UninstallDisplayIcon={app}\prometheus.exe
 
 [Files]
 Source: "prometheus-windows-amd64.exe"; DestDir: "{app}"; DestName: "prometheus.exe"; Flags: ignoreversion
+Source: "prometheus-desktop.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\assets\static\*"; DestDir: "{app}\assets\static"; Flags: ignoreversion recursesubdirs
 
 [Icons]
-Name: "{group}\Prometheus"; Filename: "{app}\prometheus.exe"
+Name: "{group}\Prometheus"; Filename: "{app}\prometheus-desktop.exe"
+Name: "{group}\Prometheus (CLI)"; Filename: "{app}\prometheus.exe"
 Name: "{group}\Uninstall Prometheus"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Prometheus"; Filename: "{app}\prometheus.exe"; Tasks: desktopicon
+Name: "{commondesktop}\Prometheus"; Filename: "{app}\prometheus-desktop.exe"; Tasks: desktopicon
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop icon"; GroupDescription: "Additional icons:"; Flags: unchecked
@@ -35,7 +37,7 @@ Name: "autolaunch"; Description: "Launch Prometheus after installation"; GroupDe
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{app};{olddata}"; Check: NeedsAddPath(ExpandConstant('{app}'))
 
 [Run]
-Filename: "{app}\prometheus.exe"; Description: "Launch Prometheus"; Tasks: autolaunch; Flags: nowait postinstall skipifsilent
+Filename: "{app}\prometheus-desktop.exe"; Description: "Launch Prometheus"; Tasks: autolaunch; Flags: nowait postinstall skipifsilent
 
 [Code]
 function NeedsAddPath(Param: string): boolean;
