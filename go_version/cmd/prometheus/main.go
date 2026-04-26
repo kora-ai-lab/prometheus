@@ -94,7 +94,7 @@ func main() {
 		for {
 			line, err := ui.ReadLine("> ")
 			if err != nil {
-				// No interactive terminal (likely double-clicked on Windows)
+				// No interactive terminal (likely double-clicked or from shortcut)
 				// Auto-launch web mode instead
 				fmt.Println("=== Prometheus AI Agent ===")
 				fmt.Println("No terminal detected. Starting web UI...")
@@ -103,8 +103,10 @@ func main() {
 				server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
 				if server == nil {
 					fmt.Println("Error: Failed to create web server")
-					fmt.Println("Press Enter to exit...")
-					fmt.Scanln()
+					fmt.Println("The program will stay open. Press Ctrl+C to exit.")
+					sigChan := make(chan os.Signal, 1)
+					signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+					<-sigChan
 					return
 				}
 				fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
@@ -112,14 +114,18 @@ func main() {
 				fmt.Println()
 				if err := server.Start(); err != nil {
 					fmt.Printf("Error starting web UI: %v\n", err)
-					fmt.Println("Press Enter to exit...")
-					fmt.Scanln()
+					fmt.Println("The program will stay open. Press Ctrl+C to exit.")
+					sigChan := make(chan os.Signal, 1)
+					signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+					<-sigChan
 					return
 				}
-				// Keep server running - block forever
+				// Keep server running - wait for interrupt signal
 				fmt.Println("Server is running. Press Ctrl+C to stop.")
-				done := make(chan bool)
-				<-done
+				sigChan := make(chan os.Signal, 1)
+				signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+				<-sigChan
+				return
 			}
 			goal = line
 			if goal != "" {
