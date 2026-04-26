@@ -91,39 +91,39 @@ func main() {
 
 	goal := strings.TrimSpace(strings.Join(os.Args[1:], " "))
 	if goal == "" {
-		line, err := ui.ReadLine("> ")
-		if err != nil {
-			// No interactive terminal (likely double-clicked on Windows)
-			// Auto-launch web mode instead
-			fmt.Println("=== Prometheus AI Agent ===")
-			fmt.Println("No terminal detected. Starting web UI...")
-			fmt.Println("Press Ctrl+C to stop...")
-			fmt.Println()
-			server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
-			if server == nil {
-				fmt.Println("Error: Failed to create web server")
-				fmt.Println("Press Enter to exit...")
-				fmt.Scanln()
-				return
+		for {
+			line, err := ui.ReadLine("> ")
+			if err != nil {
+				// No interactive terminal (likely double-clicked on Windows)
+				// Auto-launch web mode instead
+				fmt.Println("=== Prometheus AI Agent ===")
+				fmt.Println("No terminal detected. Starting web UI...")
+				fmt.Println("Press Ctrl+C to stop...")
+				fmt.Println()
+				server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
+				if server == nil {
+					fmt.Println("Error: Failed to create web server")
+					fmt.Println("Press Enter to exit...")
+					fmt.Scanln()
+					return
+				}
+				fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
+				fmt.Println("Open this URL in your browser to use Prometheus.")
+				fmt.Println()
+				if err := server.Start(); err != nil {
+					fmt.Printf("Error starting web UI: %v\n", err)
+					fmt.Println("Press Enter to exit...")
+					fmt.Scanln()
+					return
+				}
+				// Keep server running
+				select {}
 			}
-			fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
-			fmt.Println("Open this URL in your browser to use Prometheus.")
-			fmt.Println()
-			if err := server.Start(); err != nil {
-				fmt.Printf("Error starting web UI: %v\n", err)
-				fmt.Println("Press Enter to exit...")
-				fmt.Scanln()
-				return
+			goal = line
+			if goal != "" {
+				break
 			}
-			// Keep server running
-			select {}
-		}
-		goal = line
-		if goal == "" {
-			fmt.Println("No goal provided. Use 'prometheus --help' for usage.")
-			fmt.Println("Press Enter to exit...")
-			fmt.Scanln()
-			return
+			fmt.Println("No goal provided. Enter a goal or use 'prometheus --help' for usage.")
 		}
 	}
 
