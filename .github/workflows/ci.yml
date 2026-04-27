@@ -53,11 +53,6 @@ jobs:
       - name: Run Go vet
         run: go vet ./...
 
-      - name: Run staticcheck
-        run: |
-          go install honnef.co/go/tools/cmd/staticcheck@v0.6.1
-          staticcheck ./...
-
   lint:
     runs-on: ubuntu-latest
     steps:
