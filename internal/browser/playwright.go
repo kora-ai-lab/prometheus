@@ -7,8 +7,8 @@ import (
 )
 
 type PlaywrightClient struct {
-	browser_  any
-	page_     any
+	browser  any
+	page     any
 	capEngine interface{}
 }
 

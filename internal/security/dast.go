@@ -37,8 +37,8 @@ func NewDAST(cfg DASTConfig) *DAST {
 }
 
 type DAST struct {
-	cfg DASTConfig
-	client_ *http.Client
+	cfg     DASTConfig
+	client  *http.Client
 }
 
 func (d *DAST) Scan() (*DASTResult, error) {

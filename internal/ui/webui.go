@@ -9,10 +9,10 @@ import (
 )
 
 type WebServer struct {
-	server       *http.Server
-	taskExecutor_ interface{}
-	metrics      interface{}
-	config       interface{}
+	server        *http.Server
+	taskExecutor  interface{}
+	metrics       interface{}
+	config        interface{}
 }
 
 func NewWebServer(host string, port int, executor interface{}, metrics interface{}, config interface{}) *WebServer {

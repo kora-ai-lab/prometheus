@@ -62,8 +62,7 @@ func main() {
 	}
 
 	if cfg.LLM.ModelPath == "" {
-		// Skip FirstRunSetup for now - use Ollama directly
-		// Users can run "prometheus setup" to configure GGUF manually
+		logger.Info("model path not set, using auto-detection or Ollama fallback")
 	}
 
 	provider, err := llm.AutoDetect(&cfg.LLM, serverPath)

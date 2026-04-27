@@ -73,13 +73,13 @@ func TestParseTemporalQuery_LastMonday(t *testing.T) {
 
 	now := time.Now()
 	weekday := int(now.Weekday())
-	_mondayOffset := weekday + 7
+	mondayOffset := weekday + 7
 	if weekday == 0 {
-		_mondayOffset = 6
+		mondayOffset = 6
 	} else {
-		_mondayOffset = weekday - 1 + 7
+		mondayOffset = weekday - 1 + 7
 	}
-	lastMonday := now.AddDate(0, 0, -_mondayOffset).Format("2006-01-02")
+	lastMonday := now.AddDate(0, 0, -mondayOffset).Format("2006-01-02")
 
 	if result.StartDate != lastMonday {
 		t.Errorf("StartDate = %s, want %s", result.StartDate, lastMonday)
@@ -95,17 +95,17 @@ func TestParseTemporalQuery_LastWeek(t *testing.T) {
 		t.Fatal("ParseTemporalQuery returned nil")
 	}
 
-	now := time.Now()
+now := time.Now()
 	weekday := int(now.Weekday())
-	_mondayOffset := weekday + 7
+	mondayOffset := weekday + 7
 	if weekday == 0 {
-		_mondayOffset = 6
+		mondayOffset = 6
 	} else {
-		_mondayOffset = weekday - 1 + 7
+		mondayOffset = weekday - 1 + 7
 	}
-	lastMonday := now.AddDate(0, 0, -_mondayOffset).Format("2006-01-02")
+	lastMonday := now.AddDate(0, 0, -mondayOffset).Format("2006-01-02")
 
-	sundayOffset := _mondayOffset - 6
+	sundayOffset := mondayOffset - 6
 	lastSunday := now.AddDate(0, 0, -sundayOffset).Format("2006-01-02")
 
 	if result.StartDate != lastMonday {

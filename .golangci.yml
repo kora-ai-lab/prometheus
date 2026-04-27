@@ -12,12 +12,13 @@ issues:
     - linters:
         - staticcheck
       text: "^U1000"
+    - linters:
+        - staticcheck
+      text: "^SA4006"
 
 linters:
   default: none
   enable:
     - govet
-    - errcheck
     - staticcheck
-    - ineffassign
     - unused

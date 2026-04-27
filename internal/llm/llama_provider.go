@@ -304,7 +304,7 @@ func freePort() (int, error) {
 	return addr.Port, nil
 }
 
-func prometheusActionSchema_() map[string]any {
+func prometheusActionSchema() map[string]any {
 	return map[string]any{
 		"name": "PrometheusAction",
 		"strict": true,
