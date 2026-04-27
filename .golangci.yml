@@ -5,6 +5,13 @@ run:
 
 issues:
   exclude-use-default: false
+  exclude-rules:
+    - path: "_test\\.go"
+      linters:
+        - unused
+    - linters:
+        - staticcheck
+      text: "^U1000"
 
 linters:
   default: none
@@ -12,6 +19,5 @@ linters:
     - govet
     - errcheck
     - staticcheck
-    - gosimple
     - ineffassign
     - unused
