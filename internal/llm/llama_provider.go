@@ -199,12 +199,11 @@ func (p *LocalLlamaProvider) IsAvailable() bool     { return p != nil && p.cmd !
 func (p *LocalLlamaProvider) HasVision() bool       { return p.info != nil && p.info.HasVision }
 
 func (p *LocalLlamaProvider) Close() error {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-
 	if p == nil || p.cmd == nil || p.cmd.Process == nil {
 		return nil
 	}
+	p.mu.Lock()
+	defer p.mu.Unlock()
 	_ = p.cmd.Process.Kill()
 	_, _ = p.cmd.Process.Wait()
 	p.cmd = nil
@@ -305,7 +304,7 @@ func freePort() (int, error) {
 	return addr.Port, nil
 }
 
-func prometheusActionSchema() map[string]any {
+func prometheusActionSchema_() map[string]any {
 	return map[string]any{
 		"name": "PrometheusAction",
 		"strict": true,

@@ -9,11 +9,11 @@ import (
 	"github.com/kora-ai-lab/prometheus/internal/executor"
 )
 
-type mockExecutor struct {
+type mockExecutor_ struct {
 	shouldFail bool
 }
 
-func (m *mockExecutor) Execute(ctx context.Context, cmd string, opts executor.ExecOptions) *executor.ExecResult {
+func (m *mockExecutor_) Execute(ctx context.Context, cmd string, opts executor.ExecOptions) *executor.ExecResult {
 	if m.shouldFail {
 		return &executor.ExecResult{
 			Command:  cmd,

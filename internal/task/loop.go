@@ -193,7 +193,7 @@ func extractFileContent(command string) string {
 	return ""
 }
 
-func totalChars(messages []llm.Message) int {
+func totalChars_(messages []llm.Message) int {
 	n := 0
 	for _, m := range messages {
 		n += len(m.Content)

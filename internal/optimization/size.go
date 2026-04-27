@@ -70,7 +70,7 @@ func stripDebugInfo(path string) error {
     return nil
 }
 
-func trimNulBytes(b []byte) string {
+func trimNulBytes_(b []byte) string {
     for i, c := range b {
         if c == 0 {
             return string(b[:i])

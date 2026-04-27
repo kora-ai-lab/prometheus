@@ -68,10 +68,8 @@ func (p *Profiler) Start(interval time.Duration) {
 		p.mu.RUnlock()
 		
 		p.Record()
-		
-		select {
-		case <-ticker.C:
-		}
+
+		<-ticker.C
 	}
 }
 

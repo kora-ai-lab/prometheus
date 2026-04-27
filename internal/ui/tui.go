@@ -23,18 +23,18 @@ var (
 			Foreground(lipgloss.Color("165")).
 			Bold(true)
 
-	statusDoneStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("82")).Bold(true)
-	statusRunning = lipgloss.NewStyle().Foreground(lipgloss.Color("86")).Bold(true)
-	statusBlocked = lipgloss.NewStyle().Foreground(lipgloss.Color("226")).Bold(true)
-	statusError   = lipgloss.NewStyle().Foreground(lipgloss.Color("196")).Bold(true)
+	statusDoneStyle_   = lipgloss.NewStyle().Foreground(lipgloss.Color("82")).Bold(true)
+	statusRunning_ = lipgloss.NewStyle().Foreground(lipgloss.Color("86")).Bold(true)
+	statusBlocked_ = lipgloss.NewStyle().Foreground(lipgloss.Color("226")).Bold(true)
+	statusError_   = lipgloss.NewStyle().Foreground(lipgloss.Color("196")).Bold(true)
 
-	indicatorDone   = "✓"
-	indicatorRun   = "⟳"
-	indicatorBlock = "⊙"
-	indicatorWarn  = "⚠"
-	indicatorError = "✗"
-	indicatorVision  = "👁"
-	indicatorBrowser = "🌐"
+	indicatorDone_   = "✓"
+	indicatorRun_   = "⟳"
+	indicatorBlock_ = "⊙"
+	indicatorWarn_  = "⚠"
+	indicatorError_ = "✗"
+	indicatorVision_  = "👁"
+	indicatorBrowser_ = "🌐"
 )
 
 type Model struct {

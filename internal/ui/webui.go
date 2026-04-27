@@ -10,7 +10,7 @@ import (
 
 type WebServer struct {
 	server       *http.Server
-	taskExecutor interface{}
+	taskExecutor_ interface{}
 	metrics      interface{}
 	config       interface{}
 }
