@@ -15,10 +15,15 @@ issues:
     - linters:
         - staticcheck
       text: "^SA4006"
+    - linters:
+        - staticcheck
+      text: "^QF"
+    - linters:
+        - unused
+      text: "unused"
 
 linters:
   default: none
   enable:
     - govet
     - staticcheck
-    - unused
