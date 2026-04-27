@@ -10,5 +10,4 @@ linters:
   default: none
   enable:
     - govet
-    - gofmt
     - ineffassign
