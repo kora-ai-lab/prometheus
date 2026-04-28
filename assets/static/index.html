@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prometheus - AI Agent</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+        }
+        input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #0f0f23;
+            color: #fff;
+            outline: none;
+        }
+        input:focus {
+            border-color: #7b2ff7;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .status {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #0f0f23;
+            min-height: 100px;
+        }
+        .status-text {
+            color: #00ff88;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prometheus</h1>
+        <p class="tagline">AI-first agent runtime</p>
+        <div class="input-group">
+            <input type="text" id="goal" placeholder="What do you want to achieve?" autofocus>
+            <button onclick="execute()">Execute</button>
+        </div>
+        <div class="status" id="status">
+            <div class="status-text" id="output">Ready...</div>
+        </div>
+    </div>
+    <script>
+        const input = document.getElementById('goal');
+        const output = document.getElementById('output');
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') execute();
+        });
+
+        async function execute() {
+            const goal = input.value.trim();
+            if (!goal) return;
+
+            output.textContent = 'Executing: ' + goal + '\n...';
+            
+            try {
+                const res = await fetch('/api/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Goal: goal })
+                });
+                const data = await res.json();
+                
+                if (data.error) {
+                    output.textContent = 'Error: ' + data.error;
+                } else {
+                    output.textContent = data.result || 'Completed!';
+                }
+            } catch (e) {
+                output.textContent = 'Error: ' + e.message + '\n\n(Web server running in demo mode)';
+            }
+        }
+    </script>
+</body>
+</html>
