@@ -82,7 +82,27 @@ func main() {
 	_ = vault.New(filepath.Join(home, "vault.enc"))
 
 	if len(os.Args) > 1 && os.Args[1] == "--web" {
-		server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, nil, nil, nil)
+		execFn := func(ctx context.Context, goal string) (string, error) {
+			t := task.New(goal)
+			if err := store.Save(t); err != nil {
+				return "", err
+			}
+			deps := &task.TaskDeps{
+				Provider:      provider,
+				Executor:      execer,
+				Vision:        visionProvider,
+				PromptBuilder: promptBuilder,
+				CapEngine:     capEngine,
+				Security:      securityInterceptor,
+				Logger:        logger,
+				TaskStore:     store,
+			}
+			if err := t.Run(ctx, deps); err != nil {
+				return "", err
+			}
+			return fmt.Sprintf("Task %s", t.Status), nil
+		}
+		server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, execFn, nil, cfg)
 		fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
 		exitOnError(server.Start(), "starting web ui")
 		return
