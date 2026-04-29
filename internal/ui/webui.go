@@ -53,13 +53,15 @@ func (w *WebServer) AuthToken() string {
 
 func generateToken() string {
 	var b [32]byte
-	rand.Read(b[:])
+	if _, err := rand.Read(b[:]); err != nil {
+		return hex.EncodeToString(b[:])
+	}
 	return hex.EncodeToString(b[:])
 }
 
 func (w *WebServer) authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet && (r.URL.Path == "/" || r.URL.Path == "/index.html") {
+		if r.Method == http.MethodGet && (r.URL.Path == "/" || r.URL.Path == "/index.html" || strings.HasPrefix(r.URL.Path, "/static/")) {
 			next(rw, r)
 			return
 		}

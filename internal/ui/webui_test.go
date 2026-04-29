@@ -19,7 +19,12 @@ func newTestServer() (*WebServer, *api.TaskManager) {
 	mgr := api.NewTaskManager(func() *task.TaskDeps {
 		return &task.TaskDeps{}
 	})
-	mgr.WithRunFn(func(ctx context.Context, t *task.Task, deps *task.TaskDeps) error { return nil })
+	mgr.WithRunFn(func(ctx context.Context, t *task.Task, deps *task.TaskDeps) error {
+		<-ctx.Done()
+		t.Status = task.StatusDone
+		t.SetProgress("Completed")
+		return ctx.Err()
+	})
 	ws := NewWebServer("localhost", 0, mgr, cfg)
 	return ws, mgr
 }
@@ -197,9 +202,7 @@ func TestStreamEndpoint(t *testing.T) {
 
 	go func() {
 		time.Sleep(100 * time.Millisecond)
-		t, _ := mgr.GetStatus(taskID)
-		t.Status = task.StatusDone
-		t.Progress = "Completed"
+		mgr.Cancel(taskID)
 	}()
 
 	done := make(chan bool)

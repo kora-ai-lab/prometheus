@@ -26,6 +26,8 @@ func NewTaskManager(depsFactory func() *task.TaskDeps) *TaskManager {
 }
 
 func (m *TaskManager) WithRunFn(fn func(context.Context, *task.Task, *task.TaskDeps) error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 	m.runFn = fn
 }
 
@@ -43,8 +45,12 @@ func (m *TaskManager) Submit(goal string) string {
 	go func() {
 		defer cancel()
 
+		m.mu.RLock()
+		runFn := m.runFn
+		m.mu.RUnlock()
+
 		deps := m.newDeps()
-		if err := m.runFn(ctx, t, deps); err != nil {
+		if err := runFn(ctx, t, deps); err != nil {
 			m.mu.Lock()
 			if t.Status == task.StatusRunning {
 				t.Status = task.StatusFailed
@@ -121,9 +127,10 @@ func (m *TaskManager) Cancel(id string) error {
 	t.SetProgress("Cancelled")
 	delete(m.active, id)
 
-	deps := m.newDeps()
-	if err := deps.TaskStore.Save(t); err != nil {
-		return err
+	if deps := m.newDeps(); deps.TaskStore != nil {
+		if err := deps.TaskStore.Save(t); err != nil {
+			return err
+		}
 	}
 
 	return nil
