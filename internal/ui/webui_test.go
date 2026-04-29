@@ -194,6 +194,14 @@ func TestAuthToken(t *testing.T) {
 func TestStreamEndpoint(t *testing.T) {
 	ws, mgr := newTestServer()
 
+	mgr.WithRunFn(func(ctx context.Context, tk *task.Task, deps *task.TaskDeps) error {
+		tk.SetProgress("Working...")
+		<-ctx.Done()
+		tk.SetStatus(task.StatusDone)
+		tk.SetProgress("Completed")
+		return ctx.Err()
+	})
+
 	taskID := mgr.Submit("stream test")
 
 	req := httptest.NewRequest(http.MethodGet, "/api/tasks/"+taskID+"/stream", nil)

@@ -177,7 +177,7 @@ func isCI() bool {
 }
 
 func showBanner() {
-	fmt.Println(`
+	fmt.Print(`
 ╔═══════════════════════════════════════╗
 ║     Prometheus v1.0.2                 ║
 ║     AI-first agent runtime            ║

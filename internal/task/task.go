@@ -3,6 +3,7 @@ package task
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"sync"
 	"time"
 
 	"github.com/kora-ai-lab/prometheus/internal/llm"
@@ -19,6 +20,7 @@ const (
 )
 
 type Task struct {
+	mu             sync.RWMutex
 	ID             string
 	Goal           string
 	Status         TaskStatus
@@ -70,6 +72,33 @@ func (t *Task) Resume(answer string) {
 }
 
 func (t *Task) SetProgress(msg string) {
+	t.mu.Lock()
 	t.Progress = msg
 	t.UpdatedAt = time.Now()
+	t.mu.Unlock()
+}
+
+func (t *Task) SetStatus(s TaskStatus) {
+	t.mu.Lock()
+	t.Status = s
+	t.UpdatedAt = time.Now()
+	t.mu.Unlock()
+}
+
+func (t *Task) GetStatus() TaskStatus {
+	t.mu.RLock()
+	defer t.mu.RUnlock()
+	return t.Status
+}
+
+func (t *Task) IsTerminal() bool {
+	t.mu.RLock()
+	defer t.mu.RUnlock()
+	return t.Status == StatusDone || t.Status == StatusFailed || t.Status == StatusCancelled
+}
+
+func (t *Task) GetProgress() string {
+	t.mu.RLock()
+	defer t.mu.RUnlock()
+	return t.Progress
 }

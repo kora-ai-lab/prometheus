@@ -221,12 +221,15 @@ func TestTaskFields(t *testing.T) {
 func TestTerminalStates(t *testing.T) {
 	store := &mockTaskStore{}
 	mgr := NewTaskManager(newDepsFactory(store))
-	mgr.WithRunFn(noopRun)
+
+	mgr.WithRunFn(func(ctx context.Context, tk *task.Task, deps *task.TaskDeps) error {
+		tk.SetStatus(task.StatusDone)
+		return nil
+	})
 
 	id := mgr.Submit("test")
 
-	tk, _ := mgr.GetStatus(id)
-	tk.Status = task.StatusDone
+	time.Sleep(50 * time.Millisecond)
 
 	active := mgr.ListActive()
 	for _, tk := range active {
@@ -235,10 +238,19 @@ func TestTerminalStates(t *testing.T) {
 		}
 	}
 
-	tk.Status = task.StatusFailed
-	active = mgr.ListActive()
+	mgr2 := NewTaskManager(newDepsFactory(store))
+	mgr2.WithRunFn(func(ctx context.Context, tk *task.Task, deps *task.TaskDeps) error {
+		tk.SetStatus(task.StatusFailed)
+		tk.Error = "test error"
+		return nil
+	})
+
+	id2 := mgr2.Submit("test2")
+	time.Sleep(50 * time.Millisecond)
+
+	active = mgr2.ListActive()
 	for _, tk := range active {
-		if tk.ID == id {
+		if tk.ID == id2 {
 			t.Error("failed task should not appear in active list")
 		}
 	}

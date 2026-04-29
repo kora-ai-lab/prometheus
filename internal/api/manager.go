@@ -52,8 +52,8 @@ func (m *TaskManager) Submit(goal string) string {
 		deps := m.newDeps()
 		if err := runFn(ctx, t, deps); err != nil {
 			m.mu.Lock()
-			if t.Status == task.StatusRunning {
-				t.Status = task.StatusFailed
+			if t.GetStatus() == task.StatusRunning {
+				t.SetStatus(task.StatusFailed)
 				t.Error = err.Error()
 				t.SetProgress("Failed: " + err.Error())
 			}
@@ -77,7 +77,7 @@ func (m *TaskManager) GetStatus(id string) (*task.Task, error) {
 		return nil, errors.New("task not found")
 	}
 
-	return t, nil
+	return snapshot(t), nil
 }
 
 func (m *TaskManager) ListActive() []*task.Task {
@@ -86,8 +86,8 @@ func (m *TaskManager) ListActive() []*task.Task {
 
 	var result []*task.Task
 	for _, t := range m.tasks {
-		if !isTerminal(t.Status) {
-			result = append(result, t)
+		if !t.IsTerminal() {
+			result = append(result, snapshot(t))
 		}
 	}
 	return result
@@ -99,7 +99,7 @@ func (m *TaskManager) ListAll() []*task.Task {
 
 	result := make([]*task.Task, 0, len(m.tasks))
 	for _, t := range m.tasks {
-		result = append(result, t)
+		result = append(result, snapshot(t))
 	}
 	return result
 }
@@ -113,7 +113,7 @@ func (m *TaskManager) Cancel(id string) error {
 		return errors.New("task not found")
 	}
 
-	if isTerminal(t.Status) {
+	if t.IsTerminal() {
 		return errors.New("task is already in terminal state")
 	}
 
@@ -123,7 +123,7 @@ func (m *TaskManager) Cancel(id string) error {
 	}
 
 	cancel()
-	t.Status = task.StatusCancelled
+	t.SetStatus(task.StatusCancelled)
 	t.SetProgress("Cancelled")
 	delete(m.active, id)
 
@@ -138,4 +138,17 @@ func (m *TaskManager) Cancel(id string) error {
 
 func isTerminal(s task.TaskStatus) bool {
 	return s == task.StatusDone || s == task.StatusFailed || s == task.StatusCancelled
+}
+
+func snapshot(t *task.Task) *task.Task {
+	return &task.Task{
+		ID:        t.ID,
+		Goal:      t.Goal,
+		Status:    t.GetStatus(),
+		Progress:  t.GetProgress(),
+		Result:    t.Result,
+		Error:     t.Error,
+		CreatedAt: t.CreatedAt,
+		UpdatedAt: t.UpdatedAt,
+	}
 }
