@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net"
 	"os"
 	"path/filepath"
 	"time"
@@ -34,6 +33,7 @@ import (
 
 type handler struct {
 	stopCh chan struct{}
+	done   chan struct{}
 }
 
 func (h *handler) Execute(args []string, r <-chan svc.ChangeRequest, changes chan<- svc.Status) (ssec bool, errno uint32) {
@@ -46,6 +46,7 @@ func (h *handler) Execute(args []string, r <-chan svc.ChangeRequest, changes cha
 	}()
 
 	go func() {
+		defer close(h.done)
 		if err := runService(ctx); err != nil {
 			cancel()
 		}
@@ -66,6 +67,7 @@ Loop:
 			}
 		}
 	}
+	<-h.done
 	changes <- svc.Status{State: svc.Stopped}
 	return false, 0
 }
@@ -133,8 +135,7 @@ func runService(ctx context.Context) error {
 		logger.Error("failed to write token", err)
 	}
 
-	fmt.Printf("Prometheus service running on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
-	fmt.Printf("API Token: %s\n", server.AuthToken())
+	logger.Info("prometheus service started", "host", cfg.UI.WebHost, "port", cfg.UI.WebPort)
 
 	errCh := make(chan error, 1)
 	go func() {
@@ -296,7 +297,7 @@ func Run() error {
 	}
 
 	if inService {
-		h := &handler{stopCh: make(chan struct{})}
+		h := &handler{stopCh: make(chan struct{}), done: make(chan struct{})}
 		return svc.Run(ServiceName, h)
 	}
 
@@ -313,8 +314,4 @@ func writeToken(token string) error {
 		return err
 	}
 	return os.WriteFile(filepath.Join(dir, "token.txt"), []byte(token), 0600)
-}
-
-func getLocalAddr(host string, port int) string {
-	return net.JoinHostPort(host, fmt.Sprintf("%d", port))
 }

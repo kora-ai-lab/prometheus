@@ -204,9 +204,7 @@ func handleCLI(home string, cfg *config.Config, env *discovery.EnvironmentProfil
 			fmt.Println("Service uninstalled successfully")
 		case "status":
 			status, err := service.Status()
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "prometheus: getting service status: %v\n", err)
-			}
+			exitOnError(err, "getting service status")
 			fmt.Println(status)
 		case "start":
 			exitOnError(service.Start(), "starting service")
