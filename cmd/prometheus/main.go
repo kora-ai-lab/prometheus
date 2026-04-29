@@ -110,12 +110,29 @@ func main() {
 
 	goal := strings.TrimSpace(strings.Join(os.Args[1:], " "))
 	if goal == "" {
-		line, err := ui.ReadLine("> ")
-		exitOnError(err, "reading goal")
+		if !ui.IsInteractive() || isCI() {
+			showBanner()
+			fmt.Println("Usage:")
+			fmt.Println("  prometheus <goal>           Run with a goal")
+			fmt.Println("  prometheus --web            Start web UI at http://localhost:8080")
+			fmt.Println("  prometheus --help           Show help")
+			fmt.Println("")
+			fmt.Println("Examples:")
+			fmt.Println("  prometheus 'list files in current folder'")
+			fmt.Println("  prometheus 'search for info about AI'")
+			fmt.Println("  prometheus --web")
+			return
+		}
+		showBanner()
+		fmt.Print("> ")
+		line, _ := ui.ReadLine("")
 		goal = line
+		if goal == "" {
+			return
+		}
 	}
 	if goal == "" {
-		fmt.Println("No goal provided.")
+		fmt.Println("No goal provided. Usage: prometheus <goal> or prometheus --web")
 		return
 	}
 
@@ -158,6 +175,19 @@ func exitOnError(err error, step string) {
 	}
 	fmt.Fprintf(os.Stderr, "prometheus: %s: %v\n", step, err)
 	os.Exit(1)
+}
+
+func isCI() bool {
+	return os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != ""
+}
+
+func showBanner() {
+	fmt.Println(`
+╔═══════════════════════════════════════╗
+║     Prometheus v1.0.2                 ║
+║     AI-first agent runtime            ║
+╚═══════════════════════════════════════╝
+`)
 }
 
 func handleCLI(home string, cfg *config.Config, env *discovery.EnvironmentProfile) bool {
