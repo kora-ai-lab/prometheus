@@ -110,7 +110,7 @@ jobs:
         run: ls -la artifacts/**/*
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.version.outputs.VERSION }}
           name: Prometheus ${{ steps.version.outputs.VERSION }}
