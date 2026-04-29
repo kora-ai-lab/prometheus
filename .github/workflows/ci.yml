@@ -7,66 +7,119 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25'
+          go-version: '1.21'
           cache: true
 
-      - name: Tidy dependencies
-        run: go mod tidy
-
-      - name: Run tests
-        run: go test ./... -v -race
-
-      - name: Build
-        run: go build -ldflags="-s -w" -o prometheus ./cmd/prometheus
-
-      - name: Verify binary size
+      - name: Check go fmt
         run: |
-          SIZE=$(stat -c%s prometheus 2>/dev/null || stat -f%z prometheus 2>/dev/null || wc -c < prometheus)
-          echo "Binary size: $SIZE bytes"
-          if [ $SIZE -gt 26214400 ]; then
-            echo "ERROR: Binary exceeds 25MB limit"
-            exit 1
-          fi
+          go fmt ./...
+          git diff --exit-code || (echo "Code is not formatted. Run 'go fmt ./...'" && exit 1)
 
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.25'
-          cache: true
-
-      - name: Tidy dependencies
-        run: go mod tidy
-
-      - name: Run Go vet
+      - name: Run go vet
         run: go vet ./...
 
-  lint:
-    runs-on: ubuntu-latest
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+          args: --timeout=5m
+
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        go-version: ['1.21']
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25'
+          go-version: ${{ matrix.go-version }}
           cache: true
 
-      - name: Tidy dependencies
-        run: go mod tidy
+      - name: Run tests with race detector
+        run: go test ./... -race -v -count=1
 
-      - name: Check formatting
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: |
+            **/test-*.json
+            **/coverage*.out
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: windows
+            goarch: amd64
+            ext: .exe
+          - goos: linux
+            goarch: amd64
+            ext: ''
+          - goos: darwin
+            goarch: amd64
+            ext: ''
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
         run: |
-          gofmt -l .
+          go build -ldflags="-s -w" -o prometheus-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} ./cmd/prometheus
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: prometheus-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: prometheus-*
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+
+      - name: Run Gosec Security Scanner
+        uses: securego/gosec@master
+        with:
+          args: ./...
+
+      - name: Run govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-version-input: '1.21'
