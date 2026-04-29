@@ -56,7 +56,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results-${{ matrix.os }}
           path: |
@@ -96,7 +96,7 @@ jobs:
           go build -ldflags="-s -w" -o prometheus-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} ./cmd/prometheus
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: prometheus-${{ matrix.goos }}-${{ matrix.goarch }}
           path: prometheus-*
