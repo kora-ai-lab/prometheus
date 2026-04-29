@@ -1,4 +1,4 @@
-use tauri::{Emitter, Manager};
+use tauri::Emitter;
 use tauri::menu::{Menu, MenuItem};
 use tauri::tray::TrayIconBuilder;
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutState, Code, Modifiers};
@@ -20,6 +20,7 @@ pub fn run() {
         )
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_fs::init())
         .setup(move |app| {
             app.global_shortcut().register(shortcut)?;
 
@@ -28,13 +29,12 @@ pub fn run() {
             let quit_item = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&open_item, &settings_item, &quit_item])?;
             TrayIconBuilder::new()
-                .icon(app.default_window_icon().unwrap().clone())
                 .menu(&menu)
                 .on_menu_event(|app, event| {
                     match event.id().as_ref() {
                         "open" => { let _ = app.emit("shortcut-triggered", ()); },
                         "settings" => { let _ = app.emit("settings-opened", ()); },
-                        "quit" => { std::process::exit(0); },
+                        "quit" => { app.exit(0); },
                         _ => {}
                     }
                 })
