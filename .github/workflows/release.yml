@@ -46,7 +46,7 @@ jobs:
           go build -ldflags="-s -w -X github.com/kora-ai-lab/prometheus/internal/version.Version=${{ steps.version.outputs.VERSION }}" -o prometheus-${{ steps.version.outputs.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} ./cmd/prometheus
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: binary-${{ matrix.goos }}-${{ matrix.goarch }}
           path: prometheus-*
@@ -84,7 +84,7 @@ jobs:
           }
 
       - name: Upload installer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: installer-windows
           path: release/prometheus-*-setup.exe
