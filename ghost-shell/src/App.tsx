@@ -3,8 +3,10 @@ import { AnimatePresence } from 'framer-motion'
 import { listen } from '@tauri-apps/api/event'
 import { Omnibox } from './components/Omnibox'
 import { ExecutionModal } from './components/ExecutionModal'
+import { Settings } from './components/Settings'
 import { HealthBanner } from './components/HealthBanner'
 import { execute, streamTask, cancelTask, getTask } from './lib/api'
+import { addGoal } from './lib/history'
 
 interface TaskState {
   id: string | null
@@ -16,6 +18,7 @@ interface TaskState {
 
 function App() {
   const [visible, setVisible] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [task, setTask] = useState<TaskState>({ id: null, progress: '', status: '' })
   const abortRef = useRef<AbortController | null>(null)
   const goalRef = useRef<string>('')
@@ -27,12 +30,20 @@ function App() {
     return () => { unlisten.then(fn => fn()) }
   }, [])
 
+  useEffect(() => {
+    const unlisten = listen('settings-opened', () => {
+      setSettingsOpen(true)
+    })
+    return () => { unlisten.then(fn => fn()) }
+  }, [])
+
   const resetTask = () => {
     setTask({ id: null, progress: '', status: '' })
     goalRef.current = ''
   }
 
   const handleSubmit = async (goal: string) => {
+    addGoal(goal)
     setVisible(false)
     goalRef.current = goal
     setTask({ id: 'working', progress: 'Initializing...', status: 'running' })
@@ -105,6 +116,8 @@ function App() {
           />
         )}
       </AnimatePresence>
+
+      <Settings visible={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   )
 }
