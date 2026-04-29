@@ -24,6 +24,7 @@ import (
 	"github.com/kora-ai-lab/prometheus/internal/metrics"
 	"github.com/kora-ai-lab/prometheus/internal/prompt"
 	"github.com/kora-ai-lab/prometheus/internal/security"
+	"github.com/kora-ai-lab/prometheus/internal/service"
 	"github.com/kora-ai-lab/prometheus/internal/storage"
 	"github.com/kora-ai-lab/prometheus/internal/task"
 	"github.com/kora-ai-lab/prometheus/internal/ui"
@@ -187,6 +188,39 @@ func showBanner() {
 func handleCLI(home string, cfg *config.Config, env *discovery.EnvironmentProfile) bool {
 	if len(os.Args) < 2 {
 		return false
+	}
+
+	if os.Args[1] == "service" {
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: prometheus service <install|uninstall|status|start|stop|run>")
+			return true
+		}
+		switch os.Args[2] {
+		case "install":
+			exitOnError(service.Install(), "installing service")
+			fmt.Println("Service installed successfully")
+		case "uninstall":
+			exitOnError(service.Uninstall(), "uninstalling service")
+			fmt.Println("Service uninstalled successfully")
+		case "status":
+			status, err := service.Status()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "prometheus: getting service status: %v\n", err)
+			}
+			fmt.Println(status)
+		case "start":
+			exitOnError(service.Start(), "starting service")
+			fmt.Println("Service started successfully")
+		case "stop":
+			exitOnError(service.Stop(), "stopping service")
+			fmt.Println("Service stopped successfully")
+		case "run":
+			exitOnError(service.Run(), "running service")
+		default:
+			fmt.Printf("Unknown service command: %s\n", os.Args[2])
+			fmt.Println("Usage: prometheus service <install|uninstall|status|start|stop|run>")
+		}
+		return true
 	}
 
 	switch os.Args[1] {
