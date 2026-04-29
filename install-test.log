@@ -1,0 +1,72 @@
+﻿2026-04-29 13:24:25.032   Log opened. (Time zone: UTC-04:00)
+2026-04-29 13:24:25.034   Setup version: Inno Setup version 6.7.1
+2026-04-29 13:24:25.034   Original Setup EXE: C:\Users\junio\OneDrive\AI AGENT HACKATON\Prometheus\go_version\release\prometheus-2.0.0-setup.exe
+2026-04-29 13:24:25.034   Setup command line: /SL5="$9010E2,14357973,893952,C:\Users\junio\OneDrive\AI AGENT HACKATON\Prometheus\go_version\release\prometheus-2.0.0-setup.exe" /VERYSILENT /SUPPRESSMSGBOXES /LOG=install-test.log /TASKS=autoservice 
+2026-04-29 13:24:25.034   Windows version: 10.0.26200
+2026-04-29 13:24:25.034   Windows architecture: x64 (64-bit)
+2026-04-29 13:24:25.034   Machine types supported by system: x86 x64
+2026-04-29 13:24:25.034   User privileges: Administrative
+2026-04-29 13:24:25.040   Administrative install mode: Yes
+2026-04-29 13:24:25.041   Install mode root key: HKEY_LOCAL_MACHINE
+2026-04-29 13:24:25.041   64-bit install mode: Yes
+2026-04-29 13:24:25.041   RedirectionGuard status for current process: Enabled in enforcing mode
+2026-04-29 13:24:25.045   Created protected temporary directory: C:\Users\junio\AppData\Local\Temp\is-CXF1MT7RDZ.tmp
+2026-04-29 13:24:25.530   Found 2 files to register with RestartManager.
+2026-04-29 13:24:25.530   Calling RestartManager's RmGetList.
+2026-04-29 13:24:25.552   RmGetList finished successfully.
+2026-04-29 13:24:25.552   RestartManager found no applications using one of our files.
+2026-04-29 13:24:25.567   Starting the installation process.
+2026-04-29 13:24:25.574   Creating directory: C:\ProgramData\Programs
+2026-04-29 13:24:25.575   Creating directory: C:\ProgramData\Programs\Prometheus
+2026-04-29 13:24:25.576   Directory for uninstall files: C:\ProgramData\Programs\Prometheus
+2026-04-29 13:24:25.576   Creating new uninstall log: C:\ProgramData\Programs\Prometheus\unins000.dat
+2026-04-29 13:24:25.601   -- File entry --
+2026-04-29 13:24:25.601   Dest filename: C:\ProgramData\Programs\Prometheus\unins000.exe
+2026-04-29 13:24:25.601   Non-default bitness: 32-bit
+2026-04-29 13:24:25.632   Time stamp of our file: 2026-04-29 13:24:24.388
+2026-04-29 13:24:25.632   Installing the file.
+2026-04-29 13:24:25.656   Successfully installed the file.
+2026-04-29 13:24:25.656   -- File entry --
+2026-04-29 13:24:25.658   Dest filename: C:\ProgramData\Programs\Prometheus\prometheus.exe
+2026-04-29 13:24:25.658   Time stamp of our file: 2026-04-24 16:25:08.000
+2026-04-29 13:24:25.658   Installing the file.
+2026-04-29 13:24:27.130   Successfully installed the file.
+2026-04-29 13:24:27.130   -- File entry --
+2026-04-29 13:24:27.130   Dest filename: C:\ProgramData\Programs\Prometheus\prometheus-shell.exe
+2026-04-29 13:24:27.131   Time stamp of our file: 2026-04-29 13:15:08.000
+2026-04-29 13:24:27.131   Installing the file.
+2026-04-29 13:24:27.724   Successfully installed the file.
+2026-04-29 13:24:27.725   -- Icon entry --
+2026-04-29 13:24:27.725   Dest filename: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Prometheus\Prometheus Ghost Shell.lnk
+2026-04-29 13:24:27.726   Creating the icon.
+2026-04-29 13:24:28.818   Successfully created the icon.
+2026-04-29 13:24:28.858   -- Icon entry --
+2026-04-29 13:24:28.858   Dest filename: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Prometheus\Prometheus CLI.lnk
+2026-04-29 13:24:28.858   Creating the icon.
+2026-04-29 13:24:29.000   Successfully created the icon.
+2026-04-29 13:24:29.015   -- Icon entry --
+2026-04-29 13:24:29.015   Dest filename: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Prometheus\Uninstall Prometheus.lnk
+2026-04-29 13:24:29.017   Creating the icon.
+2026-04-29 13:24:29.192   Successfully created the icon.
+2026-04-29 13:24:29.357   Saving uninstall information.
+2026-04-29 13:24:29.358   Creating new uninstall key: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Prometheus_is1
+2026-04-29 13:24:29.359   Writing uninstall key values.
+2026-04-29 13:24:29.364   Detected previous non administrative install? No
+2026-04-29 13:24:29.364   Detected previous administrative 32-bit install? Yes
+2026-04-29 13:24:29.364   Marked uninstall display name to avoid duplicate entries. New display name: Prometheus 2.0.0 (64-bit)
+2026-04-29 13:24:29.375   Installation process succeeded.
+2026-04-29 13:24:29.402   -- Run entry --
+2026-04-29 13:24:29.402   Run as: Current user
+2026-04-29 13:24:29.402   Type: Exec
+2026-04-29 13:24:29.402   Filename: C:\ProgramData\Programs\Prometheus\prometheus.exe
+2026-04-29 13:24:29.402   Parameters: service install
+2026-04-29 13:24:32.864   Process exit code: 1
+2026-04-29 13:24:32.864   -- Run entry --
+2026-04-29 13:24:32.864   Run as: Current user
+2026-04-29 13:24:32.864   Type: Exec
+2026-04-29 13:24:32.864   Filename: C:\ProgramData\Programs\Prometheus\prometheus.exe
+2026-04-29 13:24:32.864   Parameters: service start
+2026-04-29 13:24:35.428   Process exit code: 1
+2026-04-29 13:24:35.433   Need to restart Windows? No
+2026-04-29 13:24:35.445   Deinitializing Setup.
+2026-04-29 13:24:35.470   Log closed.
