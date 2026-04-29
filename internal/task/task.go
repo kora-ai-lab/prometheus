@@ -29,6 +29,9 @@ type Task struct {
 	MaxRetries     int
 	ParseErrors    int
 	MaxParseErrors int
+	Result         string
+	Progress       string
+	Error          string
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
@@ -63,5 +66,10 @@ func (t *Task) Resume(answer string) {
 	})
 	t.Status = StatusRunning
 	t.BlockedReason = ""
+	t.UpdatedAt = time.Now()
+}
+
+func (t *Task) SetProgress(msg string) {
+	t.Progress = msg
 	t.UpdatedAt = time.Now()
 }

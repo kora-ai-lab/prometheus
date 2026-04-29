@@ -17,7 +17,17 @@ func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
 	deps.Logger.LogTaskStart(t.ID, t.Goal)
 	defer deps.Logger.LogTaskEnd(t.ID, t.Status)
 
+	t.SetProgress("Initializing...")
+	if err := deps.TaskStore.Save(t); err != nil {
+		return err
+	}
+
 	for t.Status == StatusRunning {
+		t.SetProgress("Thinking...")
+		if err := deps.TaskStore.Save(t); err != nil {
+			return err
+		}
+
 		messages := deps.PromptBuilder.BuildMessages(t.Context)
 		start := time.Now()
 		resp, err := deps.Provider.Complete(ctx, messages)
@@ -29,6 +39,8 @@ func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
 				strings.Contains(errMsg, "Server closed connection")
 			if !isRetryable || t.Retries >= t.MaxRetries {
 				t.Status = StatusFailed
+				t.Error = errMsg
+				t.SetProgress("Failed: " + errMsg)
 				return deps.TaskStore.Save(t)
 			}
 			t.Retries++
@@ -42,6 +54,8 @@ func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
 			t.ParseErrors++
 			if t.ParseErrors >= t.MaxParseErrors {
 				t.Status = StatusFailed
+				t.Error = parseErr.Error()
+				t.SetProgress("Failed: " + parseErr.Error())
 				return deps.TaskStore.Save(t)
 			}
 			t.Context = append(t.Context, llm.Message{
@@ -51,6 +65,11 @@ func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
 			continue
 		}
 		t.ParseErrors = 0
+
+		t.SetProgress("Executing: " + action.Action)
+		if err := deps.TaskStore.Save(t); err != nil {
+			return err
+		}
 
 		var observation string
 		switch action.Action {
@@ -110,17 +129,24 @@ func (t *Task) Run(ctx context.Context, deps *TaskDeps) error {
 		case "ask":
 			t.Status = StatusBlocked
 			t.BlockedReason = action.Question
-			t.UpdatedAt = time.Now()
+			t.SetProgress("Waiting for input: " + action.Question)
 			return deps.TaskStore.Save(t)
 		case "done":
 			t.Status = StatusDone
-			t.UpdatedAt = time.Now()
+			if action.Command != "" {
+				t.Result = action.Command
+			} else {
+				t.Result = action.Thinking
+			}
+			t.SetProgress("Done")
 			return deps.TaskStore.Save(t)
 		case "error":
 			t.Retries++
 			observation = "Agent reported an error and must retry with another approach."
 			if t.Retries >= t.MaxRetries {
 				t.Status = StatusFailed
+				t.Error = "max retries exceeded"
+				t.SetProgress("Failed: max retries exceeded")
 				t.UpdatedAt = time.Now()
 				return deps.TaskStore.Save(t)
 			}
