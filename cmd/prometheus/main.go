@@ -12,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/kora-ai-lab/prometheus/internal/api"
 	"github.com/kora-ai-lab/prometheus/internal/browser"
 	"github.com/kora-ai-lab/prometheus/internal/capabilities"
 	"github.com/kora-ai-lab/prometheus/internal/config"
@@ -82,12 +83,8 @@ func main() {
 	_ = vault.New(filepath.Join(home, "vault.enc"))
 
 	if len(os.Args) > 1 && os.Args[1] == "--web" {
-		execFn := func(ctx context.Context, goal string) (string, error) {
-			t := task.New(goal)
-			if err := store.Save(t); err != nil {
-				return "", err
-			}
-			deps := &task.TaskDeps{
+		taskMgr := api.NewTaskManager(func() *task.TaskDeps {
+			return &task.TaskDeps{
 				Provider:      provider,
 				Executor:      execer,
 				Vision:        visionProvider,
@@ -97,13 +94,10 @@ func main() {
 				Logger:        logger,
 				TaskStore:     store,
 			}
-			if err := t.Run(ctx, deps); err != nil {
-				return "", err
-			}
-			return fmt.Sprintf("Task %s", t.Status), nil
-		}
-		server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, execFn, nil, cfg)
+		})
+		server := ui.NewWebServer(cfg.UI.WebHost, cfg.UI.WebPort, taskMgr, cfg)
 		fmt.Printf("Prometheus web UI listening on http://%s:%d\n", cfg.UI.WebHost, cfg.UI.WebPort)
+		fmt.Printf("API Token: %s\n", server.AuthToken())
 		exitOnError(server.Start(), "starting web ui")
 		return
 	}

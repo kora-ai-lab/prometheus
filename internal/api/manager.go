@@ -87,6 +87,17 @@ func (m *TaskManager) ListActive() []*task.Task {
 	return result
 }
 
+func (m *TaskManager) ListAll() []*task.Task {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
+	result := make([]*task.Task, 0, len(m.tasks))
+	for _, t := range m.tasks {
+		result = append(result, t)
+	}
+	return result
+}
+
 func (m *TaskManager) Cancel(id string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
