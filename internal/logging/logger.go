@@ -254,12 +254,18 @@ func (l *Logger) LogVisionCapture(id, target string) {
 }
 
 func (l *Logger) LogJSON(level, msg string, fields map[string]interface{}) {
+	l.LogJSONWithTrace(level, msg, "", "", fields)
+}
+
+func (l *Logger) LogJSONWithTrace(level, msg, traceID, spanID string, fields map[string]interface{}) {
 	entry := StructuredEntry{
 		Timestamp: time.Now().Format(time.RFC3339Nano),
 		Level:     level,
+		TraceID:   traceID,
+		SpanID:    spanID,
 		Logger:    "prometheus",
-		Message:  msg,
-		Fields:   fields,
+		Message:   msg,
+		Fields:    fields,
 	}
 	jsonBytes, _ := json.Marshal(entry)
 	var payload map[string]any
