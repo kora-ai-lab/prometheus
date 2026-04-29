@@ -1,18 +1,24 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import { listen } from '@tauri-apps/api/event'
 import { Omnibox } from './components/Omnibox'
-import { execute } from './lib/api'
+import { ExecutionModal } from './components/ExecutionModal'
+import { HealthBanner } from './components/HealthBanner'
+import { execute, streamTask, cancelTask, getTask } from './lib/api'
 
 interface TaskState {
   id: string | null
   progress: string
   status: string
+  result?: string
+  error?: string
 }
 
 function App() {
   const [visible, setVisible] = useState(false)
   const [task, setTask] = useState<TaskState>({ id: null, progress: '', status: '' })
+  const abortRef = useRef<AbortController | null>(null)
+  const goalRef = useRef<string>('')
 
   useEffect(() => {
     const unlisten = listen('shortcut-triggered', () => {
@@ -21,54 +27,82 @@ function App() {
     return () => { unlisten.then(fn => fn()) }
   }, [])
 
+  const resetTask = () => {
+    setTask({ id: null, progress: '', status: '' })
+    goalRef.current = ''
+  }
+
   const handleSubmit = async (goal: string) => {
     setVisible(false)
+    goalRef.current = goal
     setTask({ id: 'working', progress: 'Initializing...', status: 'running' })
     try {
       const taskId = await execute(goal)
       setTask({ id: taskId, progress: 'Thinking...', status: 'running' })
+      const controller = streamTask(
+        taskId,
+        (data) => {
+          setTask(prev => ({
+            ...prev,
+            progress: data.progress,
+            status: data.status,
+          }))
+        },
+        async () => {
+          try {
+            const full = await getTask(taskId)
+            setTask(prev => ({
+              ...prev,
+              progress: full.progress,
+              status: full.status,
+              result: full.result,
+              error: full.error,
+            }))
+          } catch {
+            setTask(prev => ({ ...prev, status: 'failed', error: 'Failed to fetch result' }))
+          }
+        }
+      )
+      abortRef.current = controller
     } catch {
-      setTask({ id: null, progress: 'Core service offline', status: 'failed' })
+      setTask({ id: null, progress: '', status: 'failed', error: 'Core service offline' })
     }
   }
 
-  const handleCloseModal = () => {
-    setTask({ id: null, progress: '', status: '' })
+  const handleCancel = async () => {
+    if (task.id && task.id !== 'working') {
+      abortRef.current?.abort()
+      try { await cancelTask(task.id) } catch {}
+    }
+    resetTask()
+  }
+
+  const handleRetry = () => {
+    if (goalRef.current) handleSubmit(goalRef.current)
+  }
+
+  const handleRunAgain = () => {
+    if (goalRef.current) handleSubmit(goalRef.current)
+  }
+
+  const handleClose = () => {
+    resetTask()
   }
 
   return (
     <div className="w-full h-full bg-transparent">
+      <HealthBanner />
       <Omnibox visible={visible} onSubmit={handleSubmit} onClose={() => setVisible(false)} />
 
       <AnimatePresence>
         {task.id && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="execution-modal"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-cyan-400">
-                {task.status === 'running' ? 'Working...' : task.status === 'done' ? 'Done' : task.status}
-              </span>
-              {task.status === 'running' && (
-                <button
-                  onClick={handleCloseModal}
-                  className="text-xs text-gray-500 hover:text-white transition-colors"
-                >
-                  Cancel
-                </button>
-              )}
-            </div>
-            <p className="text-sm text-gray-300">{task.progress}</p>
-            {task.status === 'running' && (
-              <div className="progress-bar">
-                <div className="progress-bar-fill" />
-              </div>
-            )}
-          </motion.div>
+          <ExecutionModal
+            task={task}
+            onCancel={handleCancel}
+            onRetry={handleRetry}
+            onRunAgain={handleRunAgain}
+            onClose={handleClose}
+          />
         )}
       </AnimatePresence>
     </div>
