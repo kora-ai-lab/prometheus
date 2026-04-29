@@ -25,5 +25,5 @@ func Stop() error {
 }
 
 func Run() error {
-	return nil
+	return fmt.Errorf("not supported on this platform")
 }
