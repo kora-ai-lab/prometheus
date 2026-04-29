@@ -59,6 +59,9 @@ Filename: "{app}\prometheus-shell.exe"; Description: "Launch Ghost Shell"; Tasks
 Filename: "{app}\prometheus.exe"; Parameters: "service stop"; Flags: runhidden waituntilterminated; RunOnceId: "StopService"
 Filename: "{app}\prometheus.exe"; Parameters: "service uninstall"; Flags: runhidden waituntilterminated; RunOnceId: "UninstallService"
 
+[UninstallDelete]
+Type: filesandordirs; Name: "{group}"
+
 [Code]
 function ServiceExists: Boolean;
 var
