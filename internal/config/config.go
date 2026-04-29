@@ -8,6 +8,22 @@ import (
 	"strings"
 )
 
+const (
+	DefaultOllamaEndpoint = "http://127.0.0.1:11434"
+	DefaultWebPort        = 8080
+	DefaultWebHost        = "127.0.0.1"
+	DefaultContextWindow  = 4096
+	DefaultHTTPTimeout    = 120 * 1e9 // 120 seconds in nanoseconds
+	DefaultWaitTimeout    = 30 * 1e9  // 30 seconds in nanoseconds
+
+	PrometheusDirName = ".prometheus"
+	RuntimeDir       = "runtime"
+	ModelsDir        = "models"
+	LogsDir          = "logs"
+	SecurityDir      = "security"
+	PromptsDir       = "prompts"
+)
+
 type Config struct {
 	LLM      LLMConfig
 	Vision   VisionConfig
@@ -69,20 +85,20 @@ func PrometheusHome() string {
 
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return ".prometheus"
+		return PrometheusDirName
 	}
-	return filepath.Join(home, ".prometheus")
+	return filepath.Join(home, PrometheusDirName)
 }
 
 func EnsureHome() (string, error) {
 	home := PrometheusHome()
 	dirs := []string{
 		home,
-		filepath.Join(home, "runtime"),
-		filepath.Join(home, "models"),
-		filepath.Join(home, "logs"),
-		filepath.Join(home, "security"),
-		filepath.Join(home, "prompts"),
+		filepath.Join(home, RuntimeDir),
+		filepath.Join(home, ModelsDir),
+		filepath.Join(home, LogsDir),
+		filepath.Join(home, SecurityDir),
+		filepath.Join(home, PromptsDir),
 	}
 
 	for _, dir := range dirs {

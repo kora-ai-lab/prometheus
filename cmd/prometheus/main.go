@@ -81,7 +81,8 @@ func main() {
 	browserMgr := browser.NewManager(capEngine, visionProvider)
 	defer browserMgr.Close()
 	securityInterceptor := security.New(cfg.Security)
-	_ = vault.New(filepath.Join(home, "vault.enc"))
+	vaultInstance := vault.New(filepath.Join(home, "vault.enc"))
+	_ = vaultInstance
 
 	if len(os.Args) > 1 && os.Args[1] == "--web" {
 		taskMgr := api.NewTaskManager(func() *task.TaskDeps {

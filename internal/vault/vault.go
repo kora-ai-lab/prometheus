@@ -54,8 +54,10 @@ func (v *Vault) List() ([]string, error) {
 }
 
 func (v *Vault) load() (map[string]string, error) {
-	if _, err := os.Stat(v.path); os.IsNotExist(err) {
+	if _, err := os.Stat(v.path); err != nil && os.IsNotExist(err) {
 		return map[string]string{}, nil
+	} else if err != nil {
+		return nil, fmt.Errorf("failed to stat vault file: %w", err)
 	}
 	raw, err := os.ReadFile(v.path)
 	if err != nil {

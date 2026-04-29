@@ -1,11 +1,13 @@
 package config
 
+import "strconv"
+
 func DefaultConfig() *Config {
 	return &Config{
 		LLM: LLMConfig{
 			Provider:   "local",
 			ModelName:  "phi3:mini",
-			Endpoint:   "http://127.0.0.1:11434",
+			Endpoint:   DefaultOllamaEndpoint,
 			ServerPath: "",
 		},
 		Vision: VisionConfig{
@@ -34,8 +36,8 @@ func DefaultConfig() *Config {
 		},
 		UI: UIConfig{
 			WebEnabled: false,
-			WebPort:    8080,
-			WebHost:    "127.0.0.1",
+			WebPort:    DefaultWebPort,
+			WebHost:    DefaultWebHost,
 		},
 	}
 }
@@ -44,7 +46,7 @@ func DefaultConfigTOML() string {
 	return `[llm]
 provider = "local"
 model_name = "phi3:mini"
-endpoint = "http://127.0.0.1:11434"
+endpoint = "` + DefaultOllamaEndpoint + `"
 model_path = ""
 vision_model_path = ""
 server_path = ""
@@ -75,7 +77,7 @@ format = "jsonl"
 
 [ui]
 web_enabled = false
-web_port = 8080
-web_host = "127.0.0.1"
+web_port = ` + strconv.Itoa(DefaultWebPort) + `
+web_host = "` + DefaultWebHost + `"
 `
 }

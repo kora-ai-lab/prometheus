@@ -58,8 +58,12 @@ func (s *SearchEngine) SearchTemporal(ctx context.Context, query string, limit i
 	var dates []string
 
 	if tq.StartDate != "" && tq.EndDate != "" {
-		start, _ := time.Parse("2006-01-02", tq.StartDate)
-		end, _ := time.Parse("2006-01-02", tq.EndDate)
+		start, err1 := time.Parse("2006-01-02", tq.StartDate)
+		end, err2 := time.Parse("2006-01-02", tq.EndDate)
+
+		if err1 != nil || err2 != nil {
+			return nil, fmt.Errorf("invalid date format: start=%v, end=%v", err1, err2)
+		}
 
 		for d := start; !d.After(end); d = d.AddDate(0, 0, 1) {
 			dates = append(dates, d.Format("2006-01-02"))

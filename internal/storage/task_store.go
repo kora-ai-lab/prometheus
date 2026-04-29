@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"path/filepath"
 	"time"
 
@@ -150,8 +151,15 @@ func (s *Store) Load(id string) (*task.Task, error) {
 	}
 	t.MaxRetries = 5
 	t.MaxParseErrors = 3
-	t.CreatedAt, _ = time.Parse(time.RFC3339, createdAt)
-	t.UpdatedAt, _ = time.Parse(time.RFC3339, updatedAt)
+	var err error
+	t.CreatedAt, err = time.Parse(time.RFC3339, createdAt)
+	if err != nil {
+		return nil, fmt.Errorf("invalid created_at timestamp: %w", err)
+	}
+	t.UpdatedAt, err = time.Parse(time.RFC3339, updatedAt)
+	if err != nil {
+		return nil, fmt.Errorf("invalid updated_at timestamp: %w", err)
+	}
 	if len(t.Context) == 0 {
 		t.Context = []llm.Message{}
 	}

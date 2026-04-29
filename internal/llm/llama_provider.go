@@ -11,8 +11,11 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
+
+	"github.com/kora-ai-lab/prometheus/internal/config"
 )
 
 type LocalLlamaProvider struct {
@@ -39,10 +42,10 @@ func NewLocalLlamaProvider(serverPath, modelPath, visionPath string) (*LocalLlam
 	p := &LocalLlamaProvider{
 		serverPath: serverPath,
 		modelPath:  modelPath,
-		client:     &http.Client{Timeout: 120 * time.Second},
+		client:     &http.Client{Timeout: config.DefaultHTTPTimeout},
 		info: &ModelInfo{
 			Name:          filepathBase(modelPath),
-			ContextWindow: 4096,
+			ContextWindow: config.DefaultContextWindow,
 			Provider:      "local",
 			HasVision:     visionPath != "",
 		},
@@ -65,7 +68,7 @@ func (p *LocalLlamaProvider) start() error {
 	if err != nil {
 		return err
 	}
-	p.baseURL = "http://127.0.0.1:" + strconv.Itoa(port)
+	p.baseURL = config.DefaultOllamaEndpoint[:strings.LastIndex(config.DefaultOllamaEndpoint, ":")+1] + strconv.Itoa(port)
 
 	args := []string{
 		"--model", p.modelPath,
@@ -82,7 +85,7 @@ func (p *LocalLlamaProvider) start() error {
 	}
 	p.cmd = cmd
 
-	if err := p.waitReady(30 * time.Second); err != nil {
+	if err := p.waitReady(config.DefaultWaitTimeout); err != nil {
 		if p.cmd != nil && p.cmd.Process != nil {
 			p.cmd.Process.Kill()
 		}
@@ -100,7 +103,9 @@ func (p *LocalLlamaProvider) waitReady(timeout time.Duration) error {
 	for time.Now().Before(deadline) {
 		resp, err := p.client.Get(p.baseURL + "/health")
 		if err == nil {
-			_ = resp.Body.Close()
+			if err := resp.Body.Close(); err != nil {
+				return fmt.Errorf("failed to close response body: %w", err)
+			}
 			if resp.StatusCode == http.StatusOK {
 				return nil
 			}
@@ -204,8 +209,12 @@ func (p *LocalLlamaProvider) Close() error {
 	}
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	_ = p.cmd.Process.Kill()
-	_, _ = p.cmd.Process.Wait()
+	if err := p.cmd.Process.Kill(); err != nil {
+		return fmt.Errorf("failed to kill llama process: %w", err)
+	}
+	if _, err := p.cmd.Process.Wait(); err != nil {
+		return fmt.Errorf("failed to wait for llama process: %w", err)
+	}
 	p.cmd = nil
 	return nil
 }
@@ -219,7 +228,7 @@ type OllamaProvider struct {
 
 func NewOllamaProvider(endpoint, model string) *OllamaProvider {
 	if endpoint == "" {
-		endpoint = "http://127.0.0.1:11434"
+		endpoint = config.DefaultOllamaEndpoint
 	}
 	if model == "" {
 		model = "phi3:mini"
@@ -285,7 +294,9 @@ func (p *OllamaProvider) IsAvailable() bool {
 		return false
 	}
 	defer resp.Body.Close()
-	_, _ = io.Copy(io.Discard, resp.Body)
+	if _, err := io.Copy(io.Discard, resp.Body); err != nil {
+		return false
+	}
 	return resp.StatusCode < 500
 }
 func (p *OllamaProvider) HasVision() bool { return false }
