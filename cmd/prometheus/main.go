@@ -160,7 +160,11 @@ func main() {
 	case task.StatusDone:
 		fmt.Println("\n✓ Terminé")
 	case task.StatusFailed:
-		fmt.Println("\n✗ Échec — voir les logs pour plus de détails")
+		if t.Error != "" {
+			fmt.Fprintf(os.Stderr, "\n✗ Échec: %s\n", t.Error)
+		} else {
+			fmt.Fprintln(os.Stderr, "\n✗ Échec — voir les logs pour plus de détails")
+		}
 		os.Exit(1)
 	}
 }

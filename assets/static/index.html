@@ -10,12 +10,16 @@
     <div class="container">
         <h1>Prometheus</h1>
         <p class="tagline">AI-first agent runtime</p>
-        <div class="input-group">
+        <div class="auth-section" id="auth-section">
+            <input type="password" id="auth-token" placeholder="API Token (shown in terminal on startup)">
+            <button id="auth-btn">Connect</button>
+        </div>
+        <div class="input-group" id="input-group" style="display: none;">
             <input type="text" id="goal" placeholder="What do you want to achieve?" autofocus>
             <button id="execute-btn">Execute</button>
         </div>
         <div class="status" id="status">
-            <div class="status-text" id="output">Ready...</div>
+            <div class="status-text" id="output">Enter your API token to begin...</div>
         </div>
         <div class="health-bar" id="health-bar">
             <span>Loading...</span>

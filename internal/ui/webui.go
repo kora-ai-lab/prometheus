@@ -72,7 +72,9 @@ func (w *WebServer) authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		auth := r.Header.Get("Authorization")
 		if !strings.HasPrefix(auth, "Bearer ") || strings.TrimPrefix(auth, "Bearer ") != w.authToken {
-			http.Error(rw, `{"error": "unauthorized"}`, http.StatusUnauthorized)
+			rw.Header().Set("Content-Type", "application/json")
+			rw.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(rw).Encode(map[string]string{"error": "unauthorized"})
 			return
 		}
 		next(rw, r)

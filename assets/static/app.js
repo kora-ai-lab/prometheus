@@ -1,8 +1,13 @@
 const API_BASE = '';
 let authToken = '';
 let refreshInterval = null;
+let isConnected = false;
 
 const elements = {
+    authSection: null,
+    authTokenInput: null,
+    authBtn: null,
+    inputGroup: null,
     goalInput: null,
     executeBtn: null,
     output: null,
@@ -11,18 +16,29 @@ const elements = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    elements.authSection = document.getElementById('auth-section');
+    elements.authTokenInput = document.getElementById('auth-token');
+    elements.authBtn = document.getElementById('auth-btn');
+    elements.inputGroup = document.getElementById('input-group');
     elements.goalInput = document.getElementById('goal');
     elements.executeBtn = document.getElementById('execute-btn');
     elements.output = document.getElementById('output');
     elements.tasksList = document.getElementById('tasks-list');
     elements.healthBar = document.getElementById('health-bar');
 
+    if (elements.authBtn) {
+        elements.authBtn.addEventListener('click', authenticate);
+    }
+    if (elements.authTokenInput) {
+        elements.authTokenInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') authenticate();
+        });
+    }
     if (elements.goalInput) {
         elements.goalInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') execute();
         });
     }
-
     if (elements.executeBtn) {
         elements.executeBtn.addEventListener('click', execute);
     }
@@ -38,9 +54,34 @@ function loadAuthToken() {
     if (token) {
         authToken = token;
         localStorage.setItem('prometheus_token', token);
+        showConnectedUI();
     } else {
         authToken = localStorage.getItem('prometheus_token') || '';
+        if (authToken) {
+            showConnectedUI();
+        }
     }
+}
+
+function authenticate() {
+    const token = elements.authTokenInput.value.trim();
+    if (!token) return;
+
+    authToken = token;
+    localStorage.setItem('prometheus_token', token);
+    showConnectedUI();
+}
+
+function showConnectedUI() {
+    if (elements.authSection) {
+        elements.authSection.style.display = 'none';
+    }
+    if (elements.inputGroup) {
+        elements.inputGroup.style.display = 'flex';
+    }
+    isConnected = true;
+    setOutput('Connected. Enter a goal to begin.', false);
+    loadTasks();
 }
 
 function getHeaders() {
@@ -65,13 +106,24 @@ async function execute() {
             body: JSON.stringify({ Goal: goal })
         });
 
+        const data = await res.json().catch(() => null);
+
         if (!res.ok) {
-            const err = await res.json().catch(() => ({ error: 'Request failed' }));
-            setOutput(`Error: ${err.error}`, true);
+            const msg = data?.error || `Request failed (${res.status})`;
+            if (res.status === 401) {
+                setOutput('Unauthorized. Check your API token.', true);
+                showAuthUI();
+                return;
+            }
+            setOutput(`Error: ${msg}`, true);
             return;
         }
 
-        const data = await res.json();
+        if (!data || !data.task_id) {
+            setOutput('Invalid response from server.', true);
+            return;
+        }
+
         setOutput(`Task submitted: ${data.task_id}\nMonitoring progress...`, false);
         streamTaskStatus(data.task_id);
     } catch (e) {
@@ -81,6 +133,17 @@ async function execute() {
     }
 }
 
+function showAuthUI() {
+    isConnected = false;
+    if (elements.authSection) {
+        elements.authSection.style.display = 'flex';
+    }
+    if (elements.inputGroup) {
+        elements.inputGroup.style.display = 'none';
+    }
+    localStorage.removeItem('prometheus_token');
+}
+
 async function streamTaskStatus(taskId) {
     try {
         const res = await fetch(`${API_BASE}/api/tasks/${taskId}/stream`, {
@@ -88,6 +151,10 @@ async function streamTaskStatus(taskId) {
         });
 
         if (!res.ok) {
+            if (res.status === 401) {
+                showAuthUI();
+                return;
+            }
             pollTaskStatus(taskId);
             return;
         }
@@ -129,7 +196,13 @@ async function pollTaskStatus(taskId) {
             const res = await fetch(`${API_BASE}/api/tasks/${taskId}`, {
                 headers: getHeaders()
             });
-            if (!res.ok) return;
+            if (!res.ok) {
+                if (res.status === 401) {
+                    clearInterval(refreshInterval);
+                    showAuthUI();
+                }
+                return;
+            }
 
             const task = await res.json();
             setOutput(`Status: ${task.status}\nProgress: ${task.progress}${task.result ? '\nResult: ' + task.result : ''}`, false);
